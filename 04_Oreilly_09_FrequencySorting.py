@@ -39,69 +39,45 @@ def frequency_sorting(numbers):
 
     # Пока есть элементы в count будем выполнять цикл
     while True:
-        print("count = " + str(count))
-
         # Находим максимальное значение
         max_count = max(count.values())
-        print("max_count = " + str(max_count))
 
         # Перебираем весь словарь
         for key, value in count.items():
-            print("key = " + str(key) + ": value = " + str(value))
             # Проверяем, если значение равно найденному максимальному значению
             if value == max_count:
-                print("value == max_count = " + str(value) + " add element = " + str(key))
                 # то добавляем ключ по этому значению во временный список
                 tmp_list.append(key)
-                print("tmp_list = " + str(tmp_list))
-            print("-="*5)
-        print("tmp_list = " + str(tmp_list))
+
 
         # Сортируем временный список (т.к. значений с одним количеством появлений может быть несколько
         # и тогда необходимо выводить их в порядке возрастания)
         tmp_list = sorted(tmp_list)
 
-        print("sorted(tmp_list) = " + str(tmp_list))
-
         # определяем количество итераций по количеству элементов во временном списке
         for element in range(0, len(tmp_list)):
             a = tmp_list[element]
-            print("a = " + str(a))
             # определяем количество вставок
             for i in range(0, max_count):
                 # добавляем в окончательный список элемент по количеству повторов
                 result.append(tmp_list[element])
             # Удаляем из словаря элемент по ключу element
-            print("Удаляем count[tmp_list[element]] = " + str(count[tmp_list[element]]))
             del count[a]
-            print("count = " + str(count))
 
-
-
-        tmp_list = tmp_list.clear()
-
-        count = count.copy()
+        tmp_list.clear()
 
         if len(count.keys()) == 0:
             break
 
-        print(str(result))
-        print("====================================")
-
-
-
-
-
-
-
+    # Возвращаем результат
+    return result
 
 if __name__ == '__main__':
     print("Example:")
-    # print(frequency_sorting([1, 2, 3, 4, 5]))
-    print(frequency_sorting([1, 2, 2, 2, 2, 3, 4, 5, 4, 3, 1, 1, 1]))
+    print(frequency_sorting([1, 2, 3, 4, 5]))
 
     #These "asserts" using only for self-checking and not necessary for auto-testing
-    # assert frequency_sorting([1, 2, 3, 4, 5]) == [1, 2, 3, 4, 5], "Already sorted"
-    # assert frequency_sorting([3, 4, 11, 13, 11, 4, 4, 7, 3]) == [4, 4, 4, 3, 3, 11, 11, 7, 13], "Not sorted"
-    # assert frequency_sorting([99, 99, 55, 55, 21, 21, 10, 10]) == [10, 10, 21, 21, 55, 55, 99, 99], "Reversed"
-    # print("Coding complete? Click 'Check' to earn cool rewards!")
+    assert frequency_sorting([1, 2, 3, 4, 5]) == [1, 2, 3, 4, 5], "Already sorted"
+    assert frequency_sorting([3, 4, 11, 13, 11, 4, 4, 7, 3]) == [4, 4, 4, 3, 3, 11, 11, 7, 13], "Not sorted"
+    assert frequency_sorting([99, 99, 55, 55, 21, 21, 10, 10]) == [10, 10, 21, 21, 55, 55, 99, 99], "Reversed"
+    print("Coding complete? Click 'Check' to earn cool rewards!")
