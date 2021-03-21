@@ -64,8 +64,10 @@ def frequency_sorting(numbers):
             # Удаляем из словаря элемент по ключу element
             del count[a]
 
+        # Очищаем временный список
         tmp_list.clear()
 
+        # Проверяем условие прерывание цикла
         if len(count.keys()) == 0:
             break
 
