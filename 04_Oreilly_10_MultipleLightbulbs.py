@@ -462,6 +462,50 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Список состояния лампочек
     lights = list()
 
+    # Время включение света в комнате
+    # Если задано время начала контроля
+    if start_watching != None:
+        # Проверяем тип первого элемента в списке включения - дата
+        if type(els[0]) == datetime:
+            # Если время контроля было раньше или в момент включения
+            if els[0] >= start_watching:
+                # Запоминаем время старта с момента первого включения
+                light_on = els[0]
+            # иначе время старта будет начало времени контроля (даже если лампочка включена)
+            else:
+                light_on = start_watching
+        # Проверяем тип первого элемента в списке включения - кортеж
+        elif type(els[0]) == tuple:
+            # Если время контроля было раньше или в момент включения
+            if els[0][0] >= start_watching:
+                # Запоминаем время старта с момента первого включения
+                light_on = els[0][0]
+            # иначе время старта будет начало времени контроля (даже если лампочка включена)
+            else:
+                light_on = start_watching
+    # Если не задано время начала контроля
+    else:
+        # Проверяем тип первого элемента в списке включения - дата
+        if type(els[0]) == datetime:
+            # Запоминаем время старта с момента первого включения
+            light_on = els[0]
+        # Проверяем тип первого элемента в списке включения - кортеж
+        elif type(els[0]) == tuple:
+            # Запоминаем время старта с момента первого включения
+            light_on = els[0][0]
+
+    print("start_watching = " + str(light_on))
+
+    # Время выключение света в комнате
+    if end_watching != None:
+        light_off = end_watching
+    else:
+        if type(els[-1]) == datetime:
+            light_off = els[-1]
+        elif type(els[-1]) == tuple:
+            light_off = els[-1][0]
+    print("end_watching = " + str(light_off))
+
     # Поиск максимального количества лампочек
     for el in els:
         if type(el) == tuple:
@@ -474,27 +518,21 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     for i in range(0, max_light):
         lights[i] = False
 
+    for el in els:
 
+        # Определяем тип аргумента в списке
+        if type(el) == datetime:
+            # Меняем статусы соответствущих лампочек
+            lights[0] = not lights[0]
+            # Запоминаем поступившее время
+            time = el
+        elif type(el) == tuple:
+            # Меняем статусы соответствущих лампочек
+            lights[el[1] - 1] = not lights[el[1] - 1]
+            # Запоминаем поступившее время
+            time = el[0]
 
-
-    #
-    # for el in els:
-    #     if type(el) == datetime:
-    #
-    #         # if ligths[0] == False:
-    #         #     ligths[0] = True
-    #         # else:
-    #         #     ligths[0] = False
-    #
-    #     elif type(el) == tuple:
-
-
-
-
-
-
-
-
+        # if True in lights:
 
 
 if __name__ == '__main__':
