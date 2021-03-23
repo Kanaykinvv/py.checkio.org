@@ -370,88 +370,6 @@ from typing import List, Optional, Union, Tuple
 def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
               start_watching: Optional[datetime] = None,
               end_watching: Optional[datetime] = None) -> int:
-    """
-        how long the light bulb has been turned on
-    """
-    def sum_light_only(els: List[datetime]) -> int:
-        seconds = 0
-        for index in range(0, len(els) - 1, 2):
-            all_time = els[index + 1] - els[index]
-            seconds += all_time.total_seconds()
-        return seconds
-
-    def sum_light_start(els: List[datetime], start_watching: Optional[datetime] = None) -> int:
-        """
-            how long the light bulb has been turned on
-        """
-        seconds = 0
-
-        for index in range(0, len(els) - 1, 2):
-            if start_watching != None:
-                if start_watching < els[index]:
-                    all_time = els[index + 1] - els[index]
-                    seconds += all_time.total_seconds()
-                elif (els[index + 1] - start_watching).total_seconds() > 0:
-                    all_time = els[index + 1] - start_watching
-                    seconds += all_time.total_seconds()
-            else:
-                all_time = els[index + 1] - els[index]
-                seconds += all_time.total_seconds()
-        return seconds
-
-    def sum_light_start_stop(els: List[datetime], start_watching: Optional[datetime] = None,
-                  end_watching: Optional[datetime] = None) -> int:
-        """
-            how long the light bulb has been turned on
-        """
-        seconds = 0
-
-        if len(els) % 2 > 0:
-            els_1 = els[:-1]
-            els_2 = els[-1:]
-        else:
-            els_1 = els[:]
-            els_2 = None
-
-        for index in range(0, len(els_1) - 1, 2):
-            if start_watching != None:
-                if start_watching >= els_1[index + 1]:
-                    start = els_1[index + 1]
-                elif (start_watching > els_1[index]) and (start_watching < els_1[index + 1]):
-                    start = start_watching
-                else:
-                    start = els_1[index]
-            else:
-                start = els_1[index]
-
-            if end_watching != None:
-                if end_watching >= els_1[index + 1]:
-                    finish = els_1[index + 1]
-                elif (end_watching > els_1[index]) and (end_watching < els_1[index + 1]):
-                    finish = end_watching
-                else:
-                    finish = els_1[index]
-            else:
-                finish = els_1[index + 1]
-
-            all_time = finish - start
-            seconds += all_time.total_seconds()
-
-        if els_2 and len(els_2) > 0:
-            if start_watching != None:
-                start = start_watching if start_watching > els_2[0] else els_2[0]
-            else:
-                start = els_2[0]
-
-            if end_watching != None:
-                finish = end_watching if end_watching > els_2[0] else els_2[0]
-            else:
-                finish = els_2[0]
-
-            all_time = finish - start
-            seconds += all_time.total_seconds()
-
-        return seconds
 
     # Количество секунд освещение комнаты
     seconds = 0
@@ -470,31 +388,31 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
             # Если время контроля было раньше или в момент включения
             if els[0] >= start_watching:
                 # Запоминаем время старта с момента первого включения
-                light_on = els[0]
+                start_control = els[0]
             # иначе время старта будет начало времени контроля (даже если лампочка включена)
             else:
-                light_on = start_watching
+                start_control = start_watching
         # Проверяем тип первого элемента в списке включения - кортеж
         elif type(els[0]) == tuple:
             # Если время контроля было раньше или в момент включения
             if els[0][0] >= start_watching:
                 # Запоминаем время старта с момента первого включения
-                light_on = els[0][0]
+                start_control = els[0][0]
             # иначе время старта будет начало времени контроля (даже если лампочка включена)
             else:
-                light_on = start_watching
+                start_control = start_watching
     # Если не задано время начала контроля
     else:
         # Проверяем тип первого элемента в списке включения - дата
         if type(els[0]) == datetime:
             # Запоминаем время старта с момента первого включения
-            light_on = els[0]
+            start_control = els[0]
         # Проверяем тип первого элемента в списке включения - кортеж
         elif type(els[0]) == tuple:
             # Запоминаем время старта с момента первого включения
-            light_on = els[0][0]
+            start_control = els[0][0]
 
-    print("light_on = " + str(light_on))
+    print("start_control = " + str(start_control))
 
     # Время выключение света в комнате
     # Если задано время окончания контроля
@@ -504,31 +422,31 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
             # Если время окончания контроля было раньше или в момент выключения
             if els[-1] >= end_watching:
                 # Запоминаем время финиша с момента окончания контроля
-                light_off = end_watching
+                end_control = end_watching
             # иначе время финиша будет время последнего выключения (кол-во включений = кол-ву выключений)
             else:
-                light_off = els[-1]
+                end_control = els[-1]
         # Проверяем тип последнего элемента в списке выключения - кортеж
         elif type(els[-1]) == tuple:
             # Если время окончания контроля было раньше или в момент выключения
             if els[-1][0] >= end_watching:
                 # Запоминаем время финиша с момента окончания контроля
-                light_off = end_watching
+                end_control = end_watching
             # иначе время финиша будет время последнего выключения (кол-во включений = кол-ву выключений)
             else:
-                light_off = els[-1][0]
+                end_control = els[-1][0]
     # Если не задано время окончания контроля
     else:
         # Проверяем тип последнего элемента в списке выключения - дата
         if type(els[-1]) == datetime:
             # Запоминаем время финиша с момента последнего выключения
-            light_off = els[-1]
+            end_control = els[-1]
         # Проверяем тип последнего элемента в списке выключения - кортеж
         elif type(els[-1]) == tuple:
             # Запоминаем время старта с момента первого включения
-            light_off = els[-1][0]
+            end_control = els[-1][0]
 
-    print("light_off = " + str(light_off))
+    print("end_control = " + str(end_control))
 
     # Поиск максимального количества лампочек
     for el in els:
@@ -542,12 +460,37 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     for i in range(0, max_light):
         lights[i] = False
 
-    for el in els:
+    def status_lights(lights_list: list, light_index: int) -> bool:
+        """
+        Функция, которая меняет состояние указанной лампочки и
+        проверяет состояние лампоче (включена/выключена) и выдает:
+        True - если горит хотя бы одна лампочка
+        False - если все лампочки погашены
 
+        :param lights_list: переданный список лампочек
+        :param light_index: индекс изменяемой лампочки
+        :return: общий статус освещения комнаты
+        """
+        lights_list[light_index] = not lights_list[light_index]
+
+        return True if True in lights_list else False
+
+    # Последний статус свежения (в начале все выключено)
+    last_status_lights = False
+
+    # Проходим все временные отметки
+    for el in els:
         # Определяем тип аргумента в списке
         if type(el) == datetime:
-            # Меняем статусы соответствущих лампочек
-            lights[0] = not lights[0]
+            # Меняем статусы соответствущих лампочек и проверяем последний статус освещения
+            # Если свет горит, а последний статус False - свет только что загорелся
+            if status_lights(lights, 0) and not last_status_lights:
+                # Меняем статус на включено
+                last_status_lights = True
+                # Запоминаем время включения
+                light_on = el
+                # Проверка с end_control и start_control
+
             # Запоминаем поступившее время
             time = el
         elif type(el) == tuple:
@@ -556,7 +499,10 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
             # Запоминаем поступившее время
             time = el[0]
 
-        # if True in lights:****************************
+    def status(lights_list:list, light_index:int) -> bool:
+        pass
+
+
 
 
 if __name__ == '__main__':
