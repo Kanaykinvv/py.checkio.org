@@ -783,9 +783,6 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Максимальное количество лампочек (по-умолчанию 1)
     max_light = 1
 
-    # Список состояния лампочек
-    lights = list()
-
     # Границы контроля времени для замера - начало
     start_control = ""
     # Границы контроля времени для замера - конец
@@ -800,8 +797,8 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Время конца освещения комнаты
     light_off = ""
 
-    # Остаточное время работы лампочек
-    time_work_lights = dict()
+    # =================================Остаточное время работы лампочек
+    lights = dict()
 
 
     # Время включение света в комнате
@@ -863,17 +860,22 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
     print("Максимум лампочек = " + str(max_light))
 
-    # Заполняем весь список состоянию лампочек как выключенные
+    # Заполняем весь словарь состоянием лампочек как list_lights[номер_лампочки] = []
+    # 0 - состояние
+    # 1 - время включения
+    # 2 - время выключения
+    # 3 - остаточное время
     for i in range(max_light):
-        lights.append(False)
-        print("Заполнение списка light[" + str(i) + "] = " + str(lights[i]))
+        # lights.append(False)
+        lights[i] = [False, None, None, None]
+        # print("Заполнение списка light[" + str(i) + "] = " + str(lights[i]))
 
     # Заполняем остаток времени работы каждой лампочки (если задано)
     if operating != None:
         for i2 in range(max_light):
-            time_work_lights[i2] = operating
+            lights[i2][3] = operating
 
-    print("Время работы лампочек = " + str(time_work_lights))
+    print("Словарь состояний лампочек: " + str(lights))
 
     # Проходим все временные отметки
     for index in range(len(els)):
@@ -971,11 +973,8 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 seconds += (end_control - light_on).total_seconds()
                 print("seconds = " + str(seconds))
 
-    # list_lights = dict(0 : [])
-    # 0 - состояние
-    # 1 - время включения
-    # 2 - время выключения
-    # 3 - остаточное время
+    # Проверка затухания любой лампочки при каждом переборе
+
 
     print("Количество секунд работы = " + str(seconds))
     return seconds
