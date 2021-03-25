@@ -865,9 +865,10 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # 1 - время включения
     # 2 - время выключения
     # 3 - остаточное время
+    # 4 - время работы лампочки
     for i in range(max_light):
         # lights.append(False)
-        lights[i] = [False, None, None, None]
+        lights[i] = [False, datetime, datetime, None, 0]
         # print("Заполнение списка light[" + str(i) + "] = " + str(lights[i]))
 
     # Заполняем остаток времени работы каждой лампочки (если задано)
@@ -880,100 +881,21 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Проходим все временные отметки
     for index in range(len(els)):
         print("Элемент списка № " + str(index))
+
         # Определяем тип аргумента в списке
         if type(els[index]) == datetime:
             print("Это тип datetime: " + str(els[index]))
-            # Меняем статусы соответствущих лампочек и проверяем освещение
-            lights[0] = not lights[0]
-            status_lights = True if True in lights else False
-            print("Список lights = " + str(lights))
+            # Проверяем горел ли свет
+            if lights[0][0]:
+                # Меняем состояние
+                lights[0][0] = not lights[0][0]
+                lights[0][4] += (lights[0][2] - lights[0][1])
 
-            # Если свет горит, а последний статус False - следовательно освещение в комнате включилось
-            if status_lights and not last_status_lights:
-                print("Свет загорелся!")
-                # Меняем статус на включено
-                last_status_lights = True
-                # Запоминаем время включения
-                if els[index] <= start_control:
-                    light_on = start_control
-                elif (els[index] > start_control) and (els[index] < end_control):
-                    light_on = els[index]
-                else:
-                    light_on = end_control
-
-            # Если свет погас, а последний статус True - следовательно освещение в комнате выключилось
-            if not status_lights and last_status_lights:
-                print("Свет погас!")
-                # Меняем статус на выключено
-                last_status_lights = False
-                # Запоминаем время выключения
-                if els[index] >= end_control:
-                    light_off = end_control
-                elif (els[index] > start_control) and (els[index] < end_control):
-                    light_off = els[index]
-                else:
-                    light_off = light_on
-                print("light_on = " + str(light_on))
-                print("light_off = " + str(light_off))
-                # Считаем количество времени освещения
-                seconds += (light_off - light_on).total_seconds()
-                print("seconds = " + str(seconds))
-
-            # Если свет горит, а элемент последний, вычисляем время освещения до границы наблюдения
-            if status_lights and (index == len(els) - 1):
-                print("Свет горит! Последний элемент")
-                print("light_on = " + str(light_on))
-                print("end_control = " + str(end_control))
-                # Считаем количество времени освещения
-                seconds += (end_control - light_on).total_seconds()
-                print("seconds = " + str(seconds))
 
         elif type(els[index]) == tuple:
             print("Это тип tuple: " + str(els[index]))
             # Меняем статусы соответствущих лампочек и проверяем освещение
-            lights[els[index][1] - 1] = not lights[els[index][1] - 1]
-            status_lights = True if True in lights else False
-            print("Список lights = " + str(lights))
-
-            # Если свет горит, а последний статус False - следовательно освещение в комнате включилось
-            if status_lights and not last_status_lights:
-                print("Свет загорелся!")
-                # Меняем статус на включено
-                last_status_lights = True
-                # Запоминаем время включения
-                if els[index][0] <= start_control:
-                    light_on = start_control
-                elif (els[index][0] > start_control) and (els[index][0] < end_control):
-                    light_on = els[index][0]
-                else:
-                    light_on = end_control
-
-            # Если свет погас, а последний статус True - следовательно освещение в комнате выключилось
-            if not status_lights and last_status_lights:
-                print("Свет погас!")
-                # Меняем статус на выключено
-                last_status_lights = False
-                # Запоминаем время выключения
-                if els[index][0] >= end_control:
-                    light_off = end_control
-                elif (els[index][0] > start_control) and (els[index][0] < end_control):
-                    light_off = els[index][0]
-                print("light_on = " + str(light_on))
-                print("light_off = " + str(light_off))
-                # Считаем количество времени освещения
-                seconds += (light_off - light_on).total_seconds()
-                print("seconds = " + str(seconds))
-
-            # Если свет горит, а элемент последний, вычисляем время освещения до границы наблюдения
-            if status_lights and (index == len(els) - 1):
-                print("Свет горит! Последний элемент")
-                print("light_on = " + str(light_on))
-                print("end_control = " + str(end_control))
-                # Считаем количество времени освещения
-                seconds += (end_control - light_on).total_seconds()
-                print("seconds = " + str(seconds))
-
-    # Проверка затухания любой лампочки при каждом переборе
+            lights[index[1]][0] = not lights[index[1]][0]
 
 
     print("Количество секунд работы = " + str(seconds))
