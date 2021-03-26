@@ -890,7 +890,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 # Меняем состояние
                 lights[0][0] = not lights[0][0]
                 lights[0][4] += (lights[0][2] - lights[0][1])
-
+#============================================
 
         elif type(els[index]) == tuple:
             print("Это тип tuple: " + str(els[index]))
