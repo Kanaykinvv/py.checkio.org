@@ -860,7 +860,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
     print("Максимум лампочек = " + str(max_light))
 
-    # Заполняем весь словарь состоянием лампочек как list_lights[номер_лампочки] = []
+    # Заполняем весь словарь состоянием лампочек как lights[номер_лампочки] = []
     # 0 - состояние
     # 1 - время включения
     # 2 - время выключения
@@ -878,25 +878,71 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
     print("Словарь состояний лампочек: " + str(lights))
 
+    # Внутренняя функция проверяющая общее освещение комнаты
+    def lights_room(all_lights:list)->bool:
+        # Проходим по всему списку
+        for lamp in all_lights:
+            # Если хоть одна лампочка освещает комнату
+            if lamp[0]:
+                # Возвращаем True
+                return True
+        # Иначе False
+        return False
+
     # Проходим все временные отметки
     for index in range(len(els)):
         print("Элемент списка № " + str(index))
 
+        lamp_number = int
+        lamp_time = datetime
+
         # Определяем тип аргумента в списке
         if type(els[index]) == datetime:
             print("Это тип datetime: " + str(els[index]))
-            # Проверяем горел ли свет
-            if lights[0][0]:
-                # Меняем состояние
-                lights[0][0] = not lights[0][0]
-                lights[0][4] += (lights[0][2] - lights[0][1])
-#============================================
-
+            lamp_number= 0
+            lamp_time = els[index]
         elif type(els[index]) == tuple:
             print("Это тип tuple: " + str(els[index]))
-            # Меняем статусы соответствущих лампочек и проверяем освещение
-            lights[index[1]][0] = not lights[index[1]][0]
+            lamp_number = els[index][1]
+            lamp_time = els[index][0]
 
+        print("lamp_number = " + str(lamp_number))
+        print("lamp_time = " + str(lamp_time))
+
+        # Проверяем освещена ли комната - если нет
+        if not lights_room(lights):
+            # Запоминаем время включения освещения
+            light_on = lamp_time
+
+        # Проходим по всему словарю
+        for i3 in range(max_light):
+            # Если поступающий сигнал по текущей лампочки
+            if i3 == lamp_number:
+                # Если лампочка горела
+                if lights[lamp_number][0]:
+                    # Вносим время выключения
+                    lights[lamp_number][2] = lamp_time
+
+                    seconds += lights[lamp_number][2] - lights[lamp_number][1]
+                # Если лампочка не горела
+                else:
+                    # Проверяем осталось ли время ее работы
+                    if (lights[lamp_number][4] > 0) or (type(lights[lamp_number][4]) == None):
+                        # Если время есть, запоминаем время ее включения
+                        lights[lamp_number][1] = lamp_time
+
+            # Меняем состояние
+            lights[lamp_number][0] = not lights[lamp_number][0]
+
+
+
+
+            # Заполняем весь словарь состоянием лампочек как lights[номер_лампочки] = []
+            # 0 - состояние
+            # 1 - время включения
+            # 2 - время выключения
+            # 3 - остаточное время
+            # 4 - время работы лампочки
 
     print("Количество секунд работы = " + str(seconds))
     return seconds
