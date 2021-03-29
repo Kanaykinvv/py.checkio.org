@@ -867,14 +867,13 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # 3 - заданное время работы лампочки (ее ресурс)
     # 4 - время работы лампочки
     for i in range(max_light):
-        # lights.append(False)
         lights[i] = [False, datetime, datetime, None, 0]
-        # print("Заполнение списка light[" + str(i) + "] = " + str(lights[i]))
 
     # Заполняем остаток времени работы каждой лампочки (если задано)
     if operating != None:
         for i2 in range(max_light):
             lights[i2][3] = operating
+            lights[i2][4] = operating.total_seconds()
 
     print("Словарь состояний лампочек: " + str(lights))
 
@@ -918,27 +917,30 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
             if i3 == lamp_number:
                 # Если лампочка горела
                 if lights[lamp_number][0]:
-                    # Проверяем выработку ее ресурса
-                    if (lights[lamp_number][4] > 0) or (lights[lamp_number][3] == None):
-                        # Выключаем лампочку
-                        lights[lamp_number][0] = False
-                        # Запоминаем время выключения
-                        lights[lamp_number][2] = lamp_time
-                        # Делаем рассчет времени работы
+
+                    # Выключаем лампочку
+                    lights[lamp_number][0] = False
+                    # Запоминаем время выключения
+                    lights[lamp_number][2] = lamp_time
+
+                    # Проверяем выработку ее ресурса - ресурс еще есть
+                    if lights[lamp_number][4] > 0:
+                        # Проверяем время окончания
                         if (lights[lamp_number][1] + timedelta.total_seconds(lights[lamp_number][4])) < lights[lamp_number][2]:
                             lights[lamp_number][2] = lights[lamp_number][1] + timedelta.total_seconds(lights[lamp_number][4])
-                        lamp_time
-
-
+                        lights[lamp_number][4] -= timedelta(lights[lamp_number][2] - lights[lamp_number][1]).total_seconds()
+                        # !!!!!!!!ПРОВЕРИТЬ ДАННЫЙ ШАГ!!!!!!!! - дожно полуситься остаток секунд!
+                        print("lights[lamp_number][4] после вычитания = " + str(lights[lamp_number][4]))
                 # Если лампочка не горела
                 else:
-                    # Проверяем осталось ли время ее работы или если время отключено
-                    if (lights[lamp_number][3] > 0) or (type(lights[lamp_number][3]) == None):
-                        # Запоминаем время ее включения
+                    # Проверяем выработку ее ресурса - Если он остался или он бесконечен (не задан)
+                    if (lights[lamp_number][4] > 0) or (lights[lamp_number][3] == None):
+                        # Включаем лампочку
+                        lights[lamp_number][0] = True
+                        # Запоминаем время включения
                         lights[lamp_number][1] = lamp_time
-
-            # Меняем состояние
-            lights[lamp_number][0] = not lights[lamp_number][0]
+            # Если сигнал не под текущей лампочки
+            else:
 
 # Поступает сигнал:
 #     1. Проверяем статус освещения комнаты
