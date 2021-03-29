@@ -927,8 +927,8 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                         # Делаем рассчет времени работы
                         if (lights[lamp_number][1] + timedelta.total_seconds(lights[lamp_number][4])) < lights[lamp_number][2]:
                             lights[lamp_number][2] = lights[lamp_number][1] + timedelta.total_seconds(lights[lamp_number][4])
-                        else:
-                            lights[lamp_number][4] -= int((lights[lamp_number][2] - lights[lamp_number][1]))
+                        lamp_time
+
 
                 # Если лампочка не горела
                 else:
