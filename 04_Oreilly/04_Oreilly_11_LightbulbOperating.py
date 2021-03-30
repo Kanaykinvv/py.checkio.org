@@ -934,15 +934,28 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 # Если лампочка не горела
                 else:
                     # Проверяем выработку ее ресурса - Если он остался или он бесконечен (не задан)
-                    if (lights[lamp_number][4] > 0) or (lights[lamp_number][3] == None):
+                    if (lights[lamp_number][4] > 0) or (lights[lamp_number][3] is None):
                         # Включаем лампочку
                         lights[lamp_number][0] = True
                         # Запоминаем время включения
                         lights[lamp_number][1] = lamp_time
             # Если сигнал не под текущей лампочки
             else:
+                # Если лампочка горела
+                if lights[i3][0]:
+                    # Проверяем выработку ее ресурса - Если он остался и задан
+                    if (lights[i3][4] > 0) and (lights[i3][3] is not None):
+                        # Проверяем, сможет ли лампочка гореть до текущего момента - если не может
+                        if (lamp_time - lights[i3][1]) > timedelta.total_seconds(lights[i3][4]):
+                            # Выключаем лампочку
+                            lights[i3][0] = False
+                            # Запоминаем время выключения
+                            lights[i3][2] = lights[i3][1] + timedelta.total_seconds(lights[i3][4])
+                            # Время работы лампочки аннулируем
+                            lights[i3][4] = 0
 
-# Поступает сигнал:
+
+                        # Поступает сигнал:
 #     1. Проверяем статус освещения комнаты
 #         1.1. Если комната не освещалась - запоминаем время включения
 #         1.2. Иначе - Если комната перестала освещаться - запоминаем время выключения
