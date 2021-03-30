@@ -172,9 +172,9 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Внутренняя функция проверяющая общее освещение комнаты
     def lights_room(all_lights:list)->bool:
         # Проходим по всему списку
-        for lamp in all_lights:
+        for lamp in range(max_light):
             # Если хоть одна лампочка освещает комнату
-            if lamp[0]:
+            if all_lights[lamp][0]:
                 # Возвращаем True
                 return True
         # Иначе False
@@ -221,7 +221,6 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                         if (lights[lamp_number][1] + lights[lamp_number][4]) < lights[lamp_number][2]:
                             lights[lamp_number][2] = lights[lamp_number][1] + lights[lamp_number][4]
                         lights[lamp_number][4] -= timedelta(lights[lamp_number][2] - lights[lamp_number][1])
-                        # !!!!!!!!ПРОВЕРИТЬ ДАННЫЙ ШАГ!!!!!!!! - дожно полуситься остаток секунд!
                         print("lights[lamp_number][4] после вычитания = " + str(lights[lamp_number][4]))
                 # Если лампочка не горела
                 else:
@@ -245,6 +244,12 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                             lights[i3][2] = lights[i3][1] + lights[i3][4]
                             # Время работы лампочки аннулируем
                             lights[i3][4] = timedelta(seconds=0)
+                    # Иначе ничего, лампочка может гореть и дальше (ресурс или бесконечен или у него есть запас)
+                # Если лампочка не горела горела: ничего и проверять
+
+    # Проверяем статус освещения комнаты - Если комната не освещалась
+    if lights_room(lights) and not last_status_lights:
+        light_on = lamp_time
 
     print("Количество секунд работы = " + str(seconds))
     return seconds
