@@ -247,9 +247,28 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                     # Иначе ничего, лампочка может гореть и дальше (ресурс или бесконечен или у него есть запас)
                 # Если лампочка не горела горела: ничего и проверять
 
-    # Проверяем статус освещения комнаты - Если комната не освещалась
+    # Проверяем статус освещения комнаты - Если комната не освещалась и начала освещаться
     if lights_room(lights) and not last_status_lights:
+        # Запоминаем время включения
         light_on = lamp_time
+        # Меняем последний статус свечения
+        last_status_lights = True
+    # Проверяем статус освещения комнаты - Если комната освещалась и перестала освещаться
+    elif not lights_room(lights) and last_status_lights:
+        # Запоминаем время выключения
+        light_off = lamp_time
+        # Меняем последний статус свечения
+        last_status_lights = False
+
+        if light_on <= start_control:
+            light_on = start_control
+        elif light_on >= end_control:
+            light_on = end_control
+
+        if light_off >= end_control:
+            light_off = end_control
+
+        seconds += (light_off - light_on).total_seconds()
 
     print("Количество секунд работы = " + str(seconds))
     return seconds
