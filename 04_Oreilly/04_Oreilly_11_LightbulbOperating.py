@@ -159,7 +159,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # 3 - заданное время работы лампочки (ее ресурс)
     # 4 - время работы лампочки
     for i in range(max_light):
-        lights[i] = [False, datetime, datetime, None, datetime]
+        lights[i] = [False, datetime, datetime, None, None]
 
     # Заполняем остаток времени работы каждой лампочки (если задано)
     if operating != None:
@@ -234,7 +234,9 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 else:
                     print("Лампочка #" + str(lamp_number) + " НЕ горела: " + str(lights[lamp_number][0]))
                     # Проверяем выработку ее ресурса - Если он остался или он бесконечен (не задан)
-                    print("Проверяем выработку ее ресурса")
+                    print("Проверяем выработку ее ресурса...")
+                    print("lights[lamp_number][3] = " + str(lights[lamp_number][3]))
+                    print("lights[lamp_number][4] = " + str(lights[lamp_number][4]))
                     if (lights[lamp_number][4] > timedelta(seconds=0)) or (lights[lamp_number][3] is None):
                         print("Ресурс есть или он бесконечен")
                         # Включаем лампочку
