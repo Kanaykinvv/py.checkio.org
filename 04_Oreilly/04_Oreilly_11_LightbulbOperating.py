@@ -188,7 +188,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Проходим все временные отметки
     for index in range(len(els)):
 
-        print("================= Временные отметка № " + str(index) + " : " + str(els[index]) + "=================")
+        print("================= Временные отметка № " + str(index + 1) + " : " + str(els[index]) + "=================")
 
         # Номер лампочки в текущей верменной отметке
         lamp_number = int
@@ -196,142 +196,149 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         lamp_time = datetime
 
         # Определяем тип аргумента в списке
-        print("Определяем тип аргумента в списке...")
+        print("00 - Определяем тип аргумента в списке...")
         if type(els[index]) == datetime:
-            print("Это тип datetime: " + str(els[index]))
+            print("01 - Это тип datetime: " + str(els[index]))
             lamp_number = 0
             lamp_time = els[index]
         elif type(els[index]) == tuple:
-            print("Это тип tuple: " + str(els[index]))
-            lamp_number = els[index][1]
+            print("02 - Это тип tuple: " + str(els[index]))
+            lamp_number = els[index][1] - 1
             lamp_time = els[index][0]
 
         print("lamp_number = " + str(lamp_number))
         print("lamp_time = " + str(lamp_time))
 
         # Проверяем время работы лампочек при поступлении любого сигнала
-        print("Проверяем время работы лампочек при поступлении любого сигнала...")
+        print("03 - Проверяем время работы лампочек при поступлении любого сигнала...")
         for i3 in range(max_light):
-            print("Лампочка = " + str(i3))
+            print("04 - =========== Проверка всех лампочек (№" + str(i3) + ") ===========")
             # Если сигнал по текущей лампочки
             if i3 == lamp_number:
-                print("Cигнал по текущей лампочке i3 == lamp_number == " + str(i3))
+                print("05 - Cигнал по текущей лампочке i3 == lamp_number == " + str(i3))
                 # Если лампочка горела
                 if lights[lamp_number][0]:
-                    print("Лампочка #" + str(lamp_number) + " горела: " + str(lights[lamp_number][0]))
+                    print("06 - Лампочка #" + str(lamp_number) + " горела: " + str(lights[lamp_number][0]))
                     # Выключаем лампочку
                     lights[lamp_number][0] = False
-                    print("Выключаем лампочку: lights[lamp_number][0] = " + str(lights[lamp_number][0]))
+                    print("07 - Выключаем лампочку: lights[lamp_number][0] = " + str(lights[lamp_number][0]))
                     # Запоминаем время выключения
                     lights[lamp_number][2] = lamp_time
-                    print("Запоминаем время выключения: lights[lamp_number][2] = " + str(lights[lamp_number][2]))
+                    print("08 - Запоминаем время выключения: lights[lamp_number][2] = " + str(lights[lamp_number][2]))
 
                     # Проверяем выработку ее ресурса - ресурс еще есть
-                    print("Проверяем выработку ее ресурса...")
-                    print("lights[lamp_number][3] = " + str(lights[lamp_number][3]))
-                    print("lights[lamp_number][4] = " + str(lights[lamp_number][4]))
+                    print("09 - Проверяем выработку ее ресурса...")
+                    print("10 - lights[lamp_number][3] = " + str(lights[lamp_number][3]))
+                    print("11 - lights[lamp_number][4] = " + str(lights[lamp_number][4]))
                     if lights[lamp_number][4] > timedelta(seconds=0):
-                        print("Проверяем выработку ее ресурса - ресурс еще есть: lights[lamp_number][4] = " + str(lights[lamp_number][4]))
+                        print("12 - Проверяем выработку ее ресурса - ресурс еще есть: lights[lamp_number][4] = " + str(lights[lamp_number][4]))
                         # Проверяем время окончания
-                        print("Проверяем время окончания")
+                        print("13 - Проверяем время окончания")
                         if (lights[lamp_number][1] + lights[lamp_number][4]) < lights[lamp_number][2]:
-                            print("Меняем время окончания lights[lamp_number][2] = " + str(lights[lamp_number][2]))
+                            print("14 - Меняем время окончания lights[lamp_number][2] = " + str(lights[lamp_number][2]))
                             lights[lamp_number][2] = lights[lamp_number][1] + lights[lamp_number][4]
-                        print("Вычитаем наработку...")
+                        print("15 - Вычитаем наработку...")
                         lights[lamp_number][4] -= timedelta(lights[lamp_number][2] - lights[lamp_number][1])
-                        print("lights[lamp_number][4] после вычитания = " + str(lights[lamp_number][4]))
+                        print("16 - lights[lamp_number][4] после вычитания = " + str(lights[lamp_number][4]))
                 # Если лампочка не горела
                 else:
-                    print("Лампочка #" + str(lamp_number) + " НЕ горела: " + str(lights[lamp_number][0]))
+                    print("17 - Лампочка #" + str(lamp_number) + " НЕ горела: " + str(lights[lamp_number][0]))
                     # Проверяем выработку ее ресурса - Если он остался или он бесконечен (не задан)
-                    print("Проверяем выработку ее ресурса...")
-                    print("lights[lamp_number][3] = " + str(lights[lamp_number][3]))
-                    print("lights[lamp_number][4] = " + str(lights[lamp_number][4]))
+                    print("18 - Проверяем выработку ее ресурса...")
+                    print("19 - lights[lamp_number][3] = " + str(lights[lamp_number][3]))
+                    print("20 - lights[lamp_number][4] = " + str(lights[lamp_number][4]))
                     if (lights[lamp_number][4] > timedelta(seconds=0)) or (lights[lamp_number][3] is None):
-                        print("Ресурс есть или он бесконечен")
+                        print("21 - Ресурс есть или он бесконечен")
                         # Включаем лампочку
                         lights[lamp_number][0] = True
-                        print("Включаем лампочку lights[lamp_number][0] = " + str(lights[lamp_number][0]))
+                        print("22 - Включаем лампочку lights[lamp_number][0] = " + str(lights[lamp_number][0]))
                         # Запоминаем время включения
                         lights[lamp_number][1] = lamp_time
-                        print("Запоминаем время включения lights[lamp_number][1] = " + str(lights[lamp_number][1]))
+                        print("23 - Запоминаем время включения lights[lamp_number][1] = " + str(lights[lamp_number][1]))
             # Если сигнал не под текущей лампочки
             else:
-                print("Cигнал НЕ по текущей лампочке i3 != lamp_number. Лампочка = " + str(i3))
+                print("24 - Cигнал НЕ по текущей лампочке i3 != lamp_number. Лампочка = " + str(i3))
                 # Если лампочка горела
                 if lights[i3][0]:
-                    print("Лампочка горела lights[" + str(i3) + "][0] = " + str(lights[i3][0]))
+                    print("25 - Лампочка горела lights[" + str(i3) + "][0] = " + str(lights[i3][0]))
                     # Проверяем выработку ее ресурса - Если он остался и задан
-                    print("Проверяем выработку ее ресурса...")
-                    print("lights[lamp_number][3] = " + str(lights[i3][3]))
-                    print("lights[lamp_number][4] = " + str(lights[i3][4]))
+                    print("26 - Проверяем выработку ее ресурса...")
+                    print("27 - lights[lamp_number][3] = " + str(lights[i3][3]))
+                    print("28 - lights[lamp_number][4] = " + str(lights[i3][4]))
                     if (lights[i3][4] > timedelta(seconds=0)) and (lights[i3][3] is not None):
-                        print("Ресурс остался и задан...")
+                        print("29 - Ресурс остался и задан...")
                         # Проверяем, сможет ли лампочка гореть до текущего момента - если не может
                         if (lamp_time - lights[i3][1]) > lights[i3][4]:
-                            print("Лампочка не может гореть до текущего момента...")
+                            print("30 - Лампочка не может гореть до текущего момента...")
                             # Выключаем лампочку
                             lights[i3][0] = False
-                            print("Выключаем лампочку lights[i3][0] = " + str(lights[i3][0]))
+                            print("31 - Выключаем лампочку lights[i3][0] = " + str(lights[i3][0]))
                             # Запоминаем время выключения
                             lights[i3][2] = lights[i3][1] + lights[i3][4]
-                            print("Запоминаем время выключения lights[i3][2] = " + str(lights[i3][2]))
+                            print("32 - Запоминаем время выключения lights[i3][2] = " + str(lights[i3][2]))
                             # Время работы лампочки аннулируем
                             lights[i3][4].second = timedelta(seconds=0)
-                            print("Время работы лампочки аннулируем lights[i3][4] = " + str(lights[i3][4]))
+                            print("33 - Время работы лампочки аннулируем lights[i3][4] = " + str(lights[i3][4]))
 
                     else:
                         # Иначе ничего, лампочка может гореть и дальше (ресурс или бесконечен или у него есть запас)
-                        print("Лампочка может гореть и дальше (ресурс или бесконечен или у него есть запас)")
+                        print("34 - Лампочка может гореть и дальше (ресурс или бесконечен или у него есть запас)")
                 else:
                     # Если лампочка не горела: ничего и проверять
-                    print("Лампочка не горела: ничего и проверять")
+                    print("35 - Лампочка не горела: ничего и проверять")
 
-    # Проверяем статус освещения комнаты - Если комната не освещалась и начала освещаться
-    print("Проверяем статус освещения комнаты...")
-    if lights_room(lights) and not last_status_lights:
-        print("Комната не освещалась и начала освещаться")
-        # Запоминаем время включения
-        light_on = lamp_time
-        print("Запоминаем время включения light_on = " + str(light_on))
-        # Меняем последний статус свечения
-        last_status_lights = True
-        print("Меняем последний статус свечения last_status_lights = " + str(last_status_lights))
-    # Проверяем статус освещения комнаты - Если комната освещалась и перестала освещаться
-    elif not lights_room(lights) and last_status_lights:
-        print("Комната освещалась и перестала освещаться")
-        # Запоминаем время выключения
-        light_off = lamp_time
-        print("Запоминаем время выключения light_off = " + str(light_off))
-        # Меняем последний статус свечения
-        last_status_lights = False
-        print("Меняем последний статус свечения last_status_lights = " + str(last_status_lights))
+        # Проверяем статус освещения комнаты - Если комната не освещалась и начала освещаться
+        print("36 - Проверяем статус освещения комнаты...")
+        if lights_room(lights) and not last_status_lights:
+            print("37 - Комната не освещалась и начала освещаться")
+            # Запоминаем время включения
+            light_on = lamp_time
+            print("38 - Запоминаем время включения light_on = " + str(light_on))
+            # Меняем последний статус свечения
+            last_status_lights = True
+            print("39 - Меняем последний статус свечения last_status_lights = " + str(last_status_lights))
+        # Проверяем статус освещения комнаты - Если комната освещалась и перестала освещаться
+        elif not lights_room(lights) and last_status_lights:
+            print("40 - Комната освещалась и перестала освещаться")
+            # Запоминаем время выключения
+            light_off = lamp_time
+            print("41 - Запоминаем время выключения light_off = " + str(light_off))
+            # Меняем последний статус свечения
+            last_status_lights = False
+            print("42 - Меняем последний статус свечения last_status_lights = " + str(last_status_lights))
 
-        print("Проверяем границы start_control...")
-        if light_on <= start_control:
-            print("light_on (" + str(light_on) + ") <= start_control (" + str(start_control) + ")")
-            print("light_on = start_control")
-            light_on = start_control
-        elif light_on >= end_control:
-            print("light_on (" + str(light_on) + ") >= end_control (" + str(end_control) + ")")
-            print("light_on = end_control")
-            light_on = end_control
-        else:
-            print("С light_on все хорошо")
+            print("43 - Проверяем границы start_control...")
+            if light_on <= start_control:
+                print("44 - light_on (" + str(light_on) + ") <= start_control (" + str(start_control) + ")")
+                print("45 - light_on = start_control")
+                light_on = start_control
+            elif light_on >= end_control:
+                print("46 - light_on (" + str(light_on) + ") >= end_control (" + str(end_control) + ")")
+                print("47 - light_on = end_control")
+                light_on = end_control
+            else:
+                print("48 - С light_on все хорошо")
 
-        print("Проверяем границы end_control...")
-        if light_off >= end_control:
-            print("light_off (" + str(light_off) + ") >= end_control (" + str(end_control) + ")")
-            print("light_off = end_control")
-            light_off = end_control
-        else:
-            print("С light_off все хорошо")
+            print("49 - Проверяем границы end_control...")
+            if light_off >= end_control:
+                print("50 - light_off (" + str(light_off) + ") >= end_control (" + str(end_control) + ")")
+                print("51 - light_off = end_control")
+                light_off = end_control
+            else:
+                print("52 - С light_off все хорошо")
 
-        print("Происзодим подсчет seconds...")
-        seconds += (light_off - light_on).total_seconds()
-        print("seconds = " + str(seconds))
+            print("53 - Производим подсчет seconds...")
+            print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
+            print("light_on = " + str(light_on))
+            print("light_off = " + str(light_off))
+            print("seconds = " + str(seconds))
+            print("-------------------------------")
+            print("seconds += (light_off - light_on)")
+            seconds += (light_off - light_on).total_seconds()
+            print("seconds = " + str(seconds))
+            print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
 
-    print("Количество секунд работы = " + str(seconds))
+    print("54 - Количество секунд работы = " + str(seconds))
     return seconds
 
 
