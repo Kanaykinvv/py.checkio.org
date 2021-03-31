@@ -163,9 +163,14 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
     # Заполняем остаток времени работы каждой лампочки (если задано)
     if operating != None:
+        print("Выработка для лампочек задана = " + str(operating))
         for i2 in range(max_light):
             lights[i2][3] = operating
             lights[i2][4] = operating
+    else:
+        print("Выработка для лампочек не задана")
+        for i2 in range(max_light):
+            lights[i2][4] = timedelta(seconds=0)
 
     print("Словарь состояний лампочек: " + str(lights))
 
@@ -183,7 +188,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Проходим все временные отметки
     for index in range(len(els)):
 
-        print("Элемент списка № " + str(index))
+        print("================= Временные отметка № " + str(index) + " : " + str(els[index]) + "=================")
 
         # Номер лампочки в текущей верменной отметке
         lamp_number = int
@@ -191,6 +196,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         lamp_time = datetime
 
         # Определяем тип аргумента в списке
+        print("Определяем тип аргумента в списке...")
         if type(els[index]) == datetime:
             print("Это тип datetime: " + str(els[index]))
             lamp_number = 0
@@ -204,6 +210,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         print("lamp_time = " + str(lamp_time))
 
         # Проверяем время работы лампочек при поступлении любого сигнала
+        print("Проверяем время работы лампочек при поступлении любого сигнала...")
         for i3 in range(max_light):
             print("Лампочка = " + str(i3))
             # Если сигнал по текущей лампочки
@@ -220,7 +227,10 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                     print("Запоминаем время выключения: lights[lamp_number][2] = " + str(lights[lamp_number][2]))
 
                     # Проверяем выработку ее ресурса - ресурс еще есть
-                    if lights[lamp_number][4].second > timedelta(seconds=0):
+                    print("Проверяем выработку ее ресурса...")
+                    print("lights[lamp_number][3] = " + str(lights[lamp_number][3]))
+                    print("lights[lamp_number][4] = " + str(lights[lamp_number][4]))
+                    if lights[lamp_number][4] > timedelta(seconds=0):
                         print("Проверяем выработку ее ресурса - ресурс еще есть: lights[lamp_number][4] = " + str(lights[lamp_number][4]))
                         # Проверяем время окончания
                         print("Проверяем время окончания")
@@ -250,9 +260,12 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 print("Cигнал НЕ по текущей лампочке i3 != lamp_number. Лампочка = " + str(i3))
                 # Если лампочка горела
                 if lights[i3][0]:
-                    print("Лампочка горела")
+                    print("Лампочка горела lights[" + str(i3) + "][0] = " + str(lights[i3][0]))
                     # Проверяем выработку ее ресурса - Если он остался и задан
-                    if (lights[i3][4].second > timedelta(seconds=0)) and (lights[i3][3] is not None):
+                    print("Проверяем выработку ее ресурса...")
+                    print("lights[lamp_number][3] = " + str(lights[i3][3]))
+                    print("lights[lamp_number][4] = " + str(lights[i3][4]))
+                    if (lights[i3][4] > timedelta(seconds=0)) and (lights[i3][3] is not None):
                         print("Ресурс остался и задан...")
                         # Проверяем, сможет ли лампочка гореть до текущего момента - если не может
                         if (lamp_time - lights[i3][1]) > lights[i3][4]:
@@ -294,18 +307,22 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         last_status_lights = False
         print("Меняем последний статус свечения last_status_lights = " + str(last_status_lights))
 
-        print("Проверяем границы start_control и end_control...")
+        print("Проверяем границы start_control...")
         if light_on <= start_control:
-            print("light_on <= start_control")
+            print("light_on (" + str(light_on) + ") <= start_control (" + str(start_control) + ")")
+            print("light_on = start_control")
             light_on = start_control
         elif light_on >= end_control:
-            print("light_on >= end_control")
+            print("light_on (" + str(light_on) + ") >= end_control (" + str(end_control) + ")")
+            print("light_on = end_control")
             light_on = end_control
         else:
             print("С light_on все хорошо")
 
+        print("Проверяем границы end_control...")
         if light_off >= end_control:
-            print("light_off >= end_control")
+            print("light_off (" + str(light_off) + ") >= end_control (" + str(end_control) + ")")
+            print("light_off = end_control")
             light_off = end_control
         else:
             print("С light_off все хорошо")
