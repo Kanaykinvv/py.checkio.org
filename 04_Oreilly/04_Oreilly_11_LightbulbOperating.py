@@ -237,10 +237,11 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                         # Проверяем время окончания
                         print("13 - Проверяем время окончания")
                         if (lights[lamp_number][1] + lights[lamp_number][4]) < lights[lamp_number][2]:
-                            print("14 - Меняем время окончания lights[lamp_number][2] = " + str(lights[lamp_number][2]))
                             lights[lamp_number][2] = lights[lamp_number][1] + lights[lamp_number][4]
+                            print("14 - Меняем время окончания lights[lamp_number][2] = " + str(lights[lamp_number][2]))
+                            lamp_time = lights[lamp_number][2]
                         print("15 - Вычитаем наработку...")
-                        lights[lamp_number][4] -= timedelta(lights[lamp_number][2] - lights[lamp_number][1])
+                        lights[lamp_number][4] = lights[lamp_number][4] - (lights[lamp_number][2] - lights[lamp_number][1])
                         print("16 - lights[lamp_number][4] после вычитания = " + str(lights[lamp_number][4]))
                 # Если лампочка не горела
                 else:
@@ -279,7 +280,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                             lights[i3][2] = lights[i3][1] + lights[i3][4]
                             print("32 - Запоминаем время выключения lights[i3][2] = " + str(lights[i3][2]))
                             # Время работы лампочки аннулируем
-                            lights[i3][4].second = timedelta(seconds=0)
+                            lights[i3][4] = timedelta(seconds=0)
                             print("33 - Время работы лампочки аннулируем lights[i3][4] = " + str(lights[i3][4]))
 
                     else:
@@ -540,23 +541,23 @@ if __name__ == '__main__':
     #     datetime(2015, 1, 14, 0, 0, 0),
     #     (datetime(2015, 1, 15, 0, 0, 0), 2),
     # ], start_watching=datetime(2015, 1, 10, 0, 0, 0), end_watching=datetime(2015, 1, 16, 0, 0, 0)) == 345600
-
-    assert sum_light([
-        datetime(2015, 1, 12, 10, 0, 0),
-        datetime(2015, 1, 12, 10, 0, 10),
-    ], operating=timedelta(seconds=100)) == 10
+    #
+    # assert sum_light([
+    #     datetime(2015, 1, 12, 10, 0, 0),
+    #     datetime(2015, 1, 12, 10, 0, 10),
+    # ], operating=timedelta(seconds=100)) == 10
     #
     # assert sum_light([
     #     datetime(2015, 1, 12, 10, 0, 0),
     #     datetime(2015, 1, 12, 10, 0, 10),
     # ], operating=timedelta(seconds=5)) == 5
-    #
-    # assert sum_light([
-    #     datetime(2015, 1, 12, 10, 0, 0),
-    #     datetime(2015, 1, 12, 10, 0, 10),
-    #     (datetime(2015, 1, 12, 10, 0, 0), 2),
-    #     (datetime(2015, 1, 12, 10, 1, 0), 2),
-    # ], operating=timedelta(seconds=100)) == 60
+
+    assert sum_light([
+        datetime(2015, 1, 12, 10, 0, 0),
+        datetime(2015, 1, 12, 10, 0, 10),
+        (datetime(2015, 1, 12, 10, 0, 0), 2),
+        (datetime(2015, 1, 12, 10, 1, 0), 2),
+    ], operating=timedelta(seconds=100)) == 60
     #
     # assert sum_light([
     #     datetime(2015, 1, 12, 10, 0, 0),
