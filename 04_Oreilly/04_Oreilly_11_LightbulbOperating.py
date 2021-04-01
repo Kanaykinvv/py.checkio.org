@@ -172,7 +172,9 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         for i2 in range(max_light):
             lights[i2][4] = timedelta(seconds=0)
 
-    print("Словарь состояний лампочек: " + str(lights))
+    print("Словарь состояний лампочек: ")
+    for print_lamp in range(max_light):
+        print(str(print_lamp) + " : " + str(lights[print_lamp]))
 
     # Внутренняя функция проверяющая общее освещение комнаты
     def lights_room(all_lights:list)->bool:
@@ -298,8 +300,11 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
             last_status_lights = True
             print("39 - Меняем последний статус свечения last_status_lights = " + str(last_status_lights))
         # Проверяем статус освещения комнаты - Если комната освещалась и перестала освещаться
-        elif not lights_room(lights) and last_status_lights:
-            print("40 - Комната освещалась и перестала освещаться")
+        elif (not lights_room(lights) and last_status_lights) or (lights_room(lights) and (index == len(els) - 1)):
+            if not lights_room(lights) and last_status_lights:
+                print("40 - Комната освещалась и перестала освещаться")
+            elif lights_room(lights) and (index == len(els) - 1):
+                print("40 - Комната освещалась и поступил последний временной сигнал")
             # Запоминаем время выключения
             light_off = lamp_time
             print("41 - Запоминаем время выключения light_off = " + str(light_off))
@@ -324,8 +329,9 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 print("50 - light_off (" + str(light_off) + ") >= end_control (" + str(end_control) + ")")
                 print("51 - light_off = end_control")
                 light_off = end_control
-            else:
-                print("52 - С light_off все хорошо")
+            elif lights_room(lights) and (index == len(els) - 1):
+                print("52 - Последний временной сигнал, комната освещена, поэтому light_off = end_control")
+                light_off = end_control
 
             print("53 - Производим подсчет seconds...")
             print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
@@ -337,8 +343,13 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
             seconds += (light_off - light_on).total_seconds()
             print("seconds = " + str(seconds))
             print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
+        else:
+            print("54 - Комната продолжает освещаться и " + str(index) + " не последний сигнал")
 
-    print("54 - Количество секунд работы = " + str(seconds))
+    print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
+    print("55 - Количество секунд работы = " + str(seconds))
+    print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
+
     return seconds
 
 
@@ -473,12 +484,12 @@ if __name__ == '__main__':
     #     datetime(2015, 1, 12, 10, 0, 10),
     #     (datetime(2015, 1, 12, 10, 1, 0), 2),
     # ], datetime(2015, 1, 12, 10, 0, 20), datetime(2015, 1, 12, 10, 1, 0)) == 40
-
-    assert sum_light([
-        datetime(2015, 1, 12, 10, 0, 0),
-        (datetime(2015, 1, 12, 10, 0, 0), 2),
-        datetime(2015, 1, 12, 10, 0, 10),
-    ], datetime(2015, 1, 12, 10, 0, 0), datetime(2015, 1, 12, 10, 0, 30)) == 30
+    #
+    # assert sum_light([
+    #     datetime(2015, 1, 12, 10, 0, 0),
+    #     (datetime(2015, 1, 12, 10, 0, 0), 2),
+    #     datetime(2015, 1, 12, 10, 0, 10),
+    # ], datetime(2015, 1, 12, 10, 0, 0), datetime(2015, 1, 12, 10, 0, 30)) == 30
     #
     # assert sum_light([
     #     (datetime(2015, 1, 12, 10, 0, 10), 3),
@@ -529,11 +540,11 @@ if __name__ == '__main__':
     #     datetime(2015, 1, 14, 0, 0, 0),
     #     (datetime(2015, 1, 15, 0, 0, 0), 2),
     # ], start_watching=datetime(2015, 1, 10, 0, 0, 0), end_watching=datetime(2015, 1, 16, 0, 0, 0)) == 345600
-    #
-    # assert sum_light([
-    #     datetime(2015, 1, 12, 10, 0, 0),
-    #     datetime(2015, 1, 12, 10, 0, 10),
-    # ], operating=timedelta(seconds=100)) == 10
+
+    assert sum_light([
+        datetime(2015, 1, 12, 10, 0, 0),
+        datetime(2015, 1, 12, 10, 0, 10),
+    ], operating=timedelta(seconds=100)) == 10
     #
     # assert sum_light([
     #     datetime(2015, 1, 12, 10, 0, 0),
