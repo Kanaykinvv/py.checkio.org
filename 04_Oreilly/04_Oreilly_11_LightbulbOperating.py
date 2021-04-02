@@ -187,6 +187,10 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         # Иначе False
         return False
 
+    # Функция сортировки массива
+    def sort_els(els_in: List[Union[datetime, Tuple[datetime, int]]]) -> List[Union[datetime, Tuple[datetime, int]]]:
+        pass
+
     # Проходим все временные отметки
     for index in range(len(els)):
 
