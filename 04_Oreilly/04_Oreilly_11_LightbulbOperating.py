@@ -190,6 +190,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Функция создания полного списка всех временных сигналов
     # (создание новых сигналов по отработке)
     def all_signal(els_in: List[Union[datetime, Tuple[datetime, int]]]) -> List[Union[datetime, Tuple[datetime, int]]]:
+        # Реализовать впервую очередь
         pass
 
     # Функция сортировки массива
