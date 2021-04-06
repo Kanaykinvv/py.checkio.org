@@ -256,6 +256,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         return result
 
     # Функция сортировки массива
+    # (т.к. в тестах не выполняется условие возрастания временных отметок)
     def sort_els(els_in: List[Tuple[datetime, int]]) -> List[Tuple[datetime, int]]:
 
         for run in range(len(els_in)-1):
@@ -264,14 +265,12 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                     els_in[index_el], els_in[index_el+1] = els_in[index_el+1], els_in[index_el]
         return els_in
 
-    print("===== ВСЕ ТАЙМЫ =====")
-    end_els = all_signal()
+    print("===== ВСЕ ТАЙМЫ + СОРТИРОВКА=====")
+    end_els = sort_els(all_signal())
     for x in range(len(end_els)):
         print(end_els[x])
-    print("===== СОРТИРОВКА =====")
-    end_els = sort_els(end_els)
-    for x in range(len(end_els)):
-        print(end_els[x])
+
+    #=======================================
 
     # # Проходим все временные отметки
     # for index in range(len(els)):
