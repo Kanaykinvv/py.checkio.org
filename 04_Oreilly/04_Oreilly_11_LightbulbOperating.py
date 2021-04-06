@@ -189,7 +189,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
     # Функция создания полного списка всех временных сигналов
     # (создание новых сигналов по отработке)
-    def all_signal(els_in: List[Union[datetime, Tuple[datetime, int]]]) -> List[Tuple[datetime, int]]:
+    def all_signal() -> List[Tuple[datetime, int]]:
         # Реализовать впервую очередь
         # Определяем тип аргумента в списке
         result = list()
@@ -256,8 +256,30 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         return result
 
     # Функция сортировки массива
-    def sort_els(els_in: List[Union[datetime, Tuple[datetime, int]]]) -> List[Union[datetime, Tuple[datetime, int]]]:
-        pass
+    def sort_els(els_in: List[Tuple[datetime, int]]) -> List[Tuple[datetime, int]]:
+
+        for run in range(len(els_in)-1):
+            for index_el in range(len(els_in) - 1):
+                time_1 = els_in[index_el][0]
+                time_2 = els_in[index_el + 1][0]
+
+                print(time_1)
+                print(time_2)
+                #
+                #
+                # if els_in[index_el][0] > els_in[index_el+1][0]:
+                #     els_in[index_el], els_in[index_el+1] = els_in[index_el+1], els_in[index_el]
+                #     print("!!!")
+        return els_in
+
+    print("===== ВСЕ ТАЙМЫ =====")
+    end_els = all_signal()
+    for x in range(len(end_els)):
+        print(end_els[x])
+    print("===== СОРТИРОВКА =====")
+    end_els = sort_els(els)
+    for x in range(len(end_els)):
+        print(end_els[x])
 
     # # Проходим все временные отметки
     # for index in range(len(els)):
