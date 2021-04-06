@@ -255,12 +255,6 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                                 lights[i3][4] = timedelta(seconds=0)
         return result
 
-    print("++++++СОРТИРОВКА++++++")
-    end_els = all_signal(els)
-    for xxx in range(len(end_els)):
-        print(end_els[xxx])
-
-
     # Функция сортировки массива
     def sort_els(els_in: List[Union[datetime, Tuple[datetime, int]]]) -> List[Union[datetime, Tuple[datetime, int]]]:
         pass
