@@ -260,15 +260,8 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
         for run in range(len(els_in)-1):
             for index_el in range(len(els_in) - 1):
-                print("START")
-                print(els_in[index_el])
-                print(els_in[index_el+1])
-                print("FINISH")
-                #
-                #
-                # if els_in[index_el][0] > els_in[index_el+1][0]:
-                #     els_in[index_el], els_in[index_el+1] = els_in[index_el+1], els_in[index_el]
-                #     print("!!!")
+                if els_in[index_el][0] > els_in[index_el+1][0]:
+                    els_in[index_el], els_in[index_el+1] = els_in[index_el+1], els_in[index_el]
         return els_in
 
     print("===== ВСЕ ТАЙМЫ =====")
@@ -276,7 +269,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     for x in range(len(end_els)):
         print(end_els[x])
     print("===== СОРТИРОВКА =====")
-    end_els = sort_els(els)
+    end_els = sort_els(end_els)
     for x in range(len(end_els)):
         print(end_els[x])
 
