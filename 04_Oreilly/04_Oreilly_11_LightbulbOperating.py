@@ -189,18 +189,19 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
     # Функция создания полного списка всех временных сигналов
     # (создание новых сигналов по отработке)
-    def all_signal(els_in: List[Union[datetime, Tuple[datetime, int]]]) -> List[Union[datetime, Tuple[datetime, int]]]:
+    def all_signal(els_in: List[Union[datetime, Tuple[datetime, int]]]) -> List[Tuple[datetime, int]]:
         # Реализовать впервую очередь
         # Определяем тип аргумента в списке
-        print("00 - Определяем тип аргумента в списке...")
+        result = list()
+
+        print("all_signal - Определяем тип аргумента в списке")
         if type(els[index]) == datetime:
-            print("01 - Это тип datetime: " + str(els[index]))
-            lamp_number = 0
-            lamp_time = els[index]
+            print("all_signal - Это тип datetime: " + str(els[index]))
+            result.append((els[index], 0))
         elif type(els[index]) == tuple:
-            print("02 - Это тип tuple: " + str(els[index]))
-            lamp_number = els[index][1] - 1
-            lamp_time = els[index][0]
+            print("all_signal - Это тип tuple: " + str(els[index]))
+            result.append((els[index][0], els[index][1] - 1))
+
 
     # Функция сортировки массива
     def sort_els(els_in: List[Union[datetime, Tuple[datetime, int]]]) -> List[Union[datetime, Tuple[datetime, int]]]:
