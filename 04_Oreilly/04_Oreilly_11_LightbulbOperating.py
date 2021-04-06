@@ -260,11 +260,10 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
         for run in range(len(els_in)-1):
             for index_el in range(len(els_in) - 1):
-                time_1 = els_in[index_el][0]
-                time_2 = els_in[index_el + 1][0]
-
-                print(time_1)
-                print(time_2)
+                print("START")
+                print(els_in[index_el])
+                print(els_in[index_el+1])
+                print("FINISH")
                 #
                 #
                 # if els_in[index_el][0] > els_in[index_el+1][0]:
