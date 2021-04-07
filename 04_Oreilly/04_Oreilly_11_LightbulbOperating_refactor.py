@@ -141,7 +141,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         def_max_light = 1
 
         # Перебор всего списка
-        for el in els:
+        for el in def_els:
             # Если элемент это кортеж, следовательно у него есть номер лампочки (по условию)
             if type(el) == tuple:
                 # Сверяем указанную лампочку в кортеже с запомненной (в кортеже лампочки идут с 2-й)
