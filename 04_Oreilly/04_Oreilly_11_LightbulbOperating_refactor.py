@@ -154,29 +154,32 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
         print("Максимум лампочек = " + str(max_light))
 
-    # Заполняем весь словарь состоянием лампочек как lights[номер_лампочки] = []
-    # 0 - состояние
-    # 1 - время включения
-    # 2 - время выключения
-    # 3 - заданное время работы лампочки (ее ресурс)
-    # 4 - время работы лампочки
-    for i in range(max_light):
-        lights[i] = [False, datetime, datetime, None, None]
+    # Заполнение списка==============================================
+    def fiil_lights() -> list():
 
-    # Заполняем остаток времени работы каждой лампочки (если задано)
-    if operating != None:
-        print("Выработка для лампочек задана = " + str(operating))
-        for i2 in range(max_light):
-            lights[i2][3] = operating
-            lights[i2][4] = operating
-    else:
-        print("Выработка для лампочек не задана")
-        for i2 in range(max_light):
-            lights[i2][4] = timedelta(seconds=0)
+        # Заполняем весь словарь состоянием лампочек как lights[номер_лампочки] = []
+        # 0 - состояние
+        # 1 - время включения
+        # 2 - время выключения
+        # 3 - заданное время работы лампочки (ее ресурс)
+        # 4 - время работы лампочки
+        for i in range(max_light):
+            lights[i] = [False, datetime, datetime, None, None]
 
-    print("Словарь состояний лампочек: ")
-    for print_lamp in range(max_light):
-        print(str(print_lamp) + " : " + str(lights[print_lamp]))
+        # Заполняем остаток времени работы каждой лампочки (если задано)
+        if operating != None:
+            print("Выработка для лампочек задана = " + str(operating))
+            for i2 in range(max_light):
+                lights[i2][3] = operating
+                lights[i2][4] = operating
+        else:
+            print("Выработка для лампочек не задана")
+            for i2 in range(max_light):
+                lights[i2][4] = timedelta(seconds=0)
+
+        print("Словарь состояний лампочек: ")
+        for print_lamp in range(max_light):
+            print(str(print_lamp) + " : " + str(lights[print_lamp]))
 
     # Внутренняя функция проверяющая общее освещение комнаты
     def lights_room(all_lights: list) -> bool:
