@@ -168,16 +168,13 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
         # Заполняем остаток времени работы каждой лампочки (если задано)
         if operating != None:
-            print("Выработка для лампочек задана = " + str(operating))
             for i2 in range(max_light):
                 lights[i2][3] = operating
                 lights[i2][4] = operating
         else:
-            print("Выработка для лампочек не задана")
             for i2 in range(max_light):
                 lights[i2][4] = timedelta(seconds=0)
 
-        print("Словарь состояний лампочек: ")
         for print_lamp in range(max_light):
             print(str(print_lamp) + " : " + str(lights[print_lamp]))
 
