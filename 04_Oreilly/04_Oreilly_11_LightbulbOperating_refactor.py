@@ -405,6 +405,9 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
     print("===== СОЗДАНИЕ И СОРТИРОВКА НОВОГО СПИСКА =====")
     end_els = sort_els(all_signal())
+    print("end_els:")
+    for z in range(len(end_els)):
+        print(end_els[z])
 
     print("===== Границы контроля времени для замера - начало  =====")
     start_control = find_start_control(def_els=end_els, def_start_watching=start_watching)
