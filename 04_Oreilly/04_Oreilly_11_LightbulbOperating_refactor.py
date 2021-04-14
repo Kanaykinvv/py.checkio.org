@@ -87,7 +87,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Словарь состоянием лампочек
     lights = dict()
     # Внутренний параметр вывода подсказок (лога)
-    show_hint = False
+    show_hint = True
 
     # -/-/-/-/-/-/-/-/-/-/-/-/-/
     #       Внутренние методы
@@ -214,12 +214,13 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         """
         result = list()
 
+        if show_hint: print("Создание полного списка всех временных сигналов")
+
         # Проходим все временные отметки
         for index in range(len(els)):
-            if show_hint: print("all_signal - Проходим все временные отметки: index = " + str(index))
+            if show_hint: print("Проходим все временные отметки в исходном списке (els): index = " + str(index))
             # Номер лампочки в текущей верменной отметке
             lamp_number = int
-
             # Поступившее время
             lamp_time = datetime
 
@@ -233,15 +234,21 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 lamp_number = els[index][1] - 1
                 lamp_time = els[index][0]
 
+            if show_hint: print("lamp_number = " + str(lamp_number))
+            if show_hint: print("lamp_time = " + str(lamp_time))
+
+            if show_hint: print("# Проверяем время работы всех лампочек при поступлении любого сигнала")
+
             # Проверяем время работы лампочек при поступлении любого сигнала
             for i3 in range(max_light):
-                if show_hint: print("# Проверяем время работы лампочек при поступлении любого сигнала")
+                if show_hint: print("-"*50)
+                if show_hint: print("# Лампочка №" + str(i3) + "/" + str(max_light-1))
                 # Если сигнал по текущей лампочки
                 if i3 == lamp_number:
-                    if show_hint: print("# Если сигнал по текущей лампочки  ")
+                    if show_hint: print("# Сигнал по текущей лампочке (lamp_number = перебору)")
                     # Если лампочка горела
                     if lights[lamp_number][0]:
-                        if show_hint: print("# Если лампочка горела ")
+                        if show_hint: print("# Лампочка горела ")
                         # Выключаем лампочку
                         lights[lamp_number][0] = False
                         if show_hint: print("# Выключаем лампочку lights[" + str(lamp_number) + "][0] = " + str(lights[lamp_number][0]))
@@ -263,13 +270,13 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                             if show_hint: print("result.append((" + str(lamp_time) + ", " + str(lamp_number) +")) ")
                     # Если лампочка не горела
                     else:
-                        if show_hint: print("# Если лампочка не горела ")
+                        if show_hint: print("# Лампочка не горела ")
                         # Проверяем выработку ее ресурса - Если он остался или он бесконечен (не задан)
                         if (lights[lamp_number][4] > timedelta(seconds=0)) or (lights[lamp_number][3] is None):
-                            if show_hint: print("# Проверяем выработку ее ресурса - Если он остался или он бесконечен (не задан)  ")
+                            if show_hint: print("# Проверяем выработку ее ресурса - Если он остался или он бесконечен (не задан)")
                             # Включаем лампочку
                             lights[lamp_number][0] = True
-                            if show_hint: print(" # Включаем лампочку lights[" + str(lamp_number) + "][0] =" + str(lights[lamp_number][0]))
+                            if show_hint: print("# Включаем лампочку lights[" + str(lamp_number) + "][0] = " + str(lights[lamp_number][0]))
                             # Запоминаем время включения
                             lights[lamp_number][1] = lamp_time
                             if show_hint: print("# Запоминаем время включения lights[" + str(lamp_number) + "][1] = " + str(lights[lamp_number][1]))
@@ -277,16 +284,16 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                             if show_hint: print("result.append((" + str(lamp_time) + ", " + str(lamp_number) +")) ")
                 # Если сигнал не под текущей лампочки
                 else:
-                    if show_hint: print("# Если сигнал не под текущей лампочки ")
+                    if show_hint: print("# Сигнал НЕ по текущей лампочке (lamp_number != перебору)")
                     # Если лампочка горела
                     if lights[i3][0]:
-                        if show_hint: print("# Если лампочка горела")
+                        if show_hint: print("# Лампочка горела")
                         # Проверяем выработку ее ресурса - Если он остался и задан
                         if (lights[i3][4] > timedelta(seconds=0)) and (lights[i3][3] is not None):
-                            if show_hint: print("# Проверяем выработку ее ресурса - Если он остался и задан  ")
+                            if show_hint: print("# Проверяем выработку ее ресурса - он остался и задан")
                             # Проверяем, сможет ли лампочка гореть до текущего момента - если не может
                             if (lamp_time - lights[i3][1]) > lights[i3][4]:
-                                if show_hint: print("# Проверяем, сможет ли лампочка гореть до текущего момента - если не может")
+                                if show_hint: print("# Лампочка НЕ может гореть до текущего момента")
                                 # Выключаем лампочку
                                 lights[i3][0] = False
                                 if show_hint: print("# Выключаем лампочку lights[" + str(i3) + "][0] = " + str(lights[i3][0]))
@@ -298,6 +305,14 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                                 # Время работы лампочки аннулируем
                                 lights[i3][4] = timedelta(seconds=0)
                                 if show_hint: print("# Время работы лампочки аннулируем lights[" + str(i3) + "][4] = " + str(lights[i3][4]))
+                            else:
+                                if show_hint: print("# Лампочка может гореть до текущего момента")
+                        else:
+                            if show_hint: print("# Проверяем выработку ее ресурса - ресурс выработан / не задан")
+                    else:
+                        if show_hint: print("# Если лампочка НЕ горела")
+
+                if show_hint: print("-" * 50)
         return result
 
     # Сортировка входящего списка временных сигналов по возрастанию времени методом пузырька
