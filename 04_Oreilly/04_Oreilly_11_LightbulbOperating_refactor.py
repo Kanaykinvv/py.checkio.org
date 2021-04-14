@@ -409,11 +409,14 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     for z in range(len(end_els)):
         print(end_els[z])
 
-    print("===== Границы контроля времени для замера - начало  =====")
+    print("="*10)
     start_control = find_start_control(def_els=end_els, def_start_watching=start_watching)
+    print("start_control = " + str(start_control))
 
-    print("===== Границы контроля времени для замера - конец  =====")
+    print("="*10)
     end_control = find_end_control(def_els=end_els, def_end_watching=end_watching)
+    print("end_control = " + str(end_control))
+    print("="*10)
 
     # Заполнение списка
     lights = fill_lights(max_light)
@@ -437,12 +440,12 @@ if __name__ == '__main__':
     #     end_watching=datetime(2015, 1, 12, 10, 0, 30),
     #     operating=timedelta(seconds=5)))
     #
-    # assert sum_light([
-    #     datetime(2015, 1, 12, 10, 0, 0),
-    #     (datetime(2015, 1, 12, 10, 0, 0), 2),
-    #     datetime(2015, 1, 12, 10, 0, 10),
-    #     (datetime(2015, 1, 12, 10, 1, 0), 2),
-    # ]) == 60
+    assert sum_light([
+        datetime(2015, 1, 12, 10, 0, 0),
+        (datetime(2015, 1, 12, 10, 0, 0), 2),
+        datetime(2015, 1, 12, 10, 0, 10),
+        (datetime(2015, 1, 12, 10, 1, 0), 2),
+    ]) == 60
     #
     # assert sum_light([
     #     datetime(2015, 1, 12, 10, 0, 0),
