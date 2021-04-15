@@ -475,12 +475,12 @@ if __name__ == '__main__':
     #     end_watching=datetime(2015, 1, 12, 10, 0, 30),
     #     operating=timedelta(seconds=5)))
     #
-    assert sum_light([
-        datetime(2015, 1, 12, 10, 0, 0),
-        (datetime(2015, 1, 12, 10, 0, 0), 2),
-        datetime(2015, 1, 12, 10, 0, 10),
-        (datetime(2015, 1, 12, 10, 1, 0), 2),
-    ]) == 60
+    # assert sum_light([
+    #     datetime(2015, 1, 12, 10, 0, 0),
+    #     (datetime(2015, 1, 12, 10, 0, 0), 2),
+    #     datetime(2015, 1, 12, 10, 0, 10),
+    #     (datetime(2015, 1, 12, 10, 1, 0), 2),
+    # ]) == 60
     #
     # assert sum_light([
     #     datetime(2015, 1, 12, 10, 0, 0),
