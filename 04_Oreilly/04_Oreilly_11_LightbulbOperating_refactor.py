@@ -367,6 +367,8 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 # Включаем лампочку
                 def_lights[lamp_number][0] = True
 
+            print(def_lights[lamp_number])
+
             # Если комната не освещалась и начала освещаться
             if lights_room(def_lights) and not last_status_lights:
                 # Запоминаем время включения
