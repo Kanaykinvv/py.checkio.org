@@ -387,6 +387,16 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
             # Если комната освещалась и перестала освещаться | или комната освещается и это последний временной элемент
             elif (not lights_room(def_lights) and last_status_lights) or \
                     (lights_room(def_lights) and (index == len(end_els) - 1)):
+                print("=====(not lights_room(def_lights) and last_status_lights)=====")
+                print("not lights_room(def_lights) = " + str(not lights_room(def_lights)))
+                print("last_status_lights) = " + str(last_status_lights))
+                print("-"*50)
+                print("OR")
+                print("-" * 50)
+                print("===== (lights_room(def_lights) and (index == len(end_els) - 1)=====")
+                print("lights_room(def_lights) = " + str(lights_room(def_lights)))
+                print("index == len(end_els) - 1 = " + str(index == len(end_els) - 1))
+                print("-" * 50)
                 # Запоминаем время выключения
                 light_off = lamp_time
                 # Меняем последний статус свечения
@@ -423,7 +433,12 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 print("result = " + str(result))
                 result += (light_off - light_on).total_seconds()
                 print("ИТОГО: " + str(result))
+            print("=============================")
 
+        print("=============================")
+        print("Все временные отметки пройдены")
+        print("result = " + str(result))
+        print("=============================")
         return result
 
     # -/-/-/-/-/-/-/-/-/-/-/-/-/
