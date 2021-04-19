@@ -80,10 +80,6 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     start_control = ""
     # Границы контроля времени для замера - конец
     end_control = ""
-    # Время начала освещения комнаты
-    light_on = ""
-    # Время конца освещения комнаты
-    light_off = ""
     # Словарь состоянием лампочек
     lights = dict()
     # Внутренний параметр вывода подсказок (лога)
@@ -341,10 +337,18 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         """
         # Количество секунд освещения комнаты
         result = 0
-
+        # Время начала освещения комнаты
+        light_on = ""
+        # Время конца освещения комнаты
+        light_off = ""
         # Последний статус свечения (в начале все выключено)
         last_status_lights = False
 
+
+        print("===================================")
+        print("--------- count_seconds ---------")
+        print("===================================")
+        print("Проходим все временные отметки, всего отметок " + str(len(end_els)))
         # Проходим все временные отметки
         for index in range(len(end_els)):
 
@@ -363,9 +367,11 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
             if def_lights[lamp_number][0]:
                 # Выключаем лампочку
                 def_lights[lamp_number][0] = False
+                print("Лампочка горела - > Выключаем лампочку")
             else:
                 # Включаем лампочку
                 def_lights[lamp_number][0] = True
+                print("Лампочка не горела - > Включаем лампочку")
 
             print(def_lights[lamp_number])
 
@@ -375,6 +381,9 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 light_on = lamp_time
                 # Меняем последний статус свечения
                 last_status_lights = True
+                print("Комната не освещалась и начала освещаться")
+                print("light_on = lamp_time = " + str(lamp_time))
+                print("last_status_lights = True")
             # Если комната освещалась и перестала освещаться | или комната освещается и это последний временной элемент
             elif (not lights_room(def_lights) and last_status_lights) or \
                     (lights_room(def_lights) and (index == len(end_els) - 1)):
@@ -382,27 +391,38 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 light_off = lamp_time
                 # Меняем последний статус свечения
                 last_status_lights = False
+                print("Комната освещалась и перестала освещаться или комната освещается и это последний временной элемент")
+                print("light_off = lamp_time = " + str(lamp_time))
+                print("last_status_lights = False")
 
                 # Если время начала освещения комнаты раньше, чем время начала мониторинга
                 if light_on <= start_control:
                     # Время начала освещения принимаем за время начала мониторинга
                     light_on = start_control
+                    print("Время начала освещения комнаты раньше, чем время начала мониторинга: light_on = start_control = " + str(start_control))
                 # Если время начала освещения комнаты больше, чем время окончания мониторинга
                 elif light_on >= end_control:
                     # Время начала освещения принимаем за время конца мониторинга
                     light_on = end_control
+                    print("Время начала освещения комнаты больше, чем время окончания мониторинга: light_on = end_control = " + str(end_control))
 
                 # Если время окончания освещения комнаты больше, чем время конца мониторинга
                 if light_off >= end_control:
                     # Время окончания освещения принимаем за время конца мониторинга
                     light_off = end_control
+                    print("Время окончания освещения комнаты больше, чем время конца мониторинга: light_off = end_control = " + str(end_control))
                 # Если комната освещается и больше не будет временных сигналов (он последний)
                 elif lights_room(def_lights) and (index == len(end_els) - 1):
                     # Берем время выключения равное времени конца мониторинга
                     light_off = end_control
+                    print("Комната освещается и больше не будет временных сигналов (он последний) light_off = end_control = " + str(end_control))
 
                 # Производим подсчет seconds
+                print("Производим подсчет seconds")
+                print("(light_off - light_on).total_seconds() = " + str((light_off - light_on).total_seconds()))
+                print("result = " + str(result))
                 result += (light_off - light_on).total_seconds()
+                print("ИТОГО: " + str(result))
 
         return result
 
