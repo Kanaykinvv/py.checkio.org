@@ -20,27 +20,36 @@
 # '00:00' <= время <= '23:59'
 
 def time_converter(time):
-    #replace this for solution
+    # Отделяем время от указателя полдудня
     time_list = time.split()
 
+    # Через срез вытаскиваем Часы и Минуты
     hour = time_list[0][:time_list[0].find(':')]
     minutes = time_list[0][time_list[0].find(':') + 1:]
 
+    # Проверяем указатель после полудня
+    if "p." in time_list[1]:
+        # Если стрелка ушла за 12
+        if int(hour) < 12:
+            # Добваляем 12 к часам
+            hour = str(int(hour) + 12)
+    # Если до полудня и часы = 12
+    elif ("a." in time_list[1]) and (int(hour) == 12):
+        # Переводим часы в 0
+        hour = "0"
+
+    # В случае однозначного значения добавляем 0 в начало часов
     if int(hour) < 10:
-        hour = "0" + hour
+        hour = "0" + str(hour)
 
-    print("Часы = " + hour)
-    print("Минуты = " + minutes)
-
-
-    # return time
+    return hour + ":" + minutes
 
 if __name__ == '__main__':
     print("Example:")
     print(time_converter('12:30 p.m.'))
-    #
-    # #These "asserts" using only for self-checking and not necessary for auto-testing
-    # assert time_converter('12:30 p.m.') == '12:30'
-    # assert time_converter('9:00 a.m.') == '09:00'
-    # assert time_converter('11:15 p.m.') == '23:15'
-    # print("Coding complete? Click 'Check' to earn cool rewards!")
+
+    #These "asserts" using only for self-checking and not necessary for auto-testing
+    assert time_converter('12:30 p.m.') == '12:30'
+    assert time_converter('9:00 a.m.') == '09:00'
+    assert time_converter('11:15 p.m.') == '23:15'
+    print("Coding complete? Click 'Check' to earn cool rewards!")
