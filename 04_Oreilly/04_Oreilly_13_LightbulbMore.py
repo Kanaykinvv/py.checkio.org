@@ -192,20 +192,21 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         return result
 
     # Проверка освещения комнаты
-    def lights_room(all_lights: list) -> bool:
+    def lights_room(all_lights: list, def_req: int) -> bool:
         """
-        Проверка освещения комнаты
-        :param all_lights: - список списков лампочек
-        :return: - результат освещения (True) комнаты, или темноты в ней (False)
+        Проверка освещения комнаты по количеству включенных лампочек
+        :param all_lights: список списков лампочек
+        :param def_req: количество необходимых включенных лампочек, чтобы комната считалась освещенной
+        :return: результат освещения (True) комнаты, или темноты в ней (False)
         """
+        current_on_lights = 0
         # Проходим по всему списку
         for lamp in range(len(all_lights)):
-            # Если хоть одна лампочка освещает комнату
+            # Если лампочка освещает включена
             if all_lights[lamp][0]:
-                # Возвращаем True
-                return True
-        # Иначе False
-        return False
+                # Увеличиваем счетчик включенных лампочек
+                current_on_lights += 1
+        return True if current_on_lights >= def_req else False
 
     # Создание полного списка всех временных сигналов
     # (создание новых сигналов по отработке)
@@ -337,7 +338,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
         return els_in
 
     # Проход по всем временным отметкам с включением\выключением лампочек и подсчетом времени освещения
-    def count_seconds(end_els: List[Tuple[datetime, int]], def_lights: dict) -> int:
+    def count_seconds(end_els: List[Tuple[datetime, int]], def_lights: dict, def_count_light: int) -> int:
         """
         # Проход по всем временным отметкам с включением\выключением лампочек и подсчетом времени освещения
         :return: - количество секунд освещения комнаты
@@ -383,7 +384,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
             print(def_lights[lamp_number])
 
             # Если комната не освещалась и начала освещаться
-            if lights_room(def_lights) and not last_status_lights:
+            if lights_room(def_lights, def_count_light) and not last_status_lights:
                 # Запоминаем время включения
                 light_on = lamp_time
                 # Меняем последний статус свечения
@@ -392,16 +393,16 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 print("light_on = lamp_time = " + str(lamp_time))
                 print("last_status_lights = True")
             # Если комната освещалась и перестала освещаться | или комната освещается и это последний временной элемент
-            elif (not lights_room(def_lights) and last_status_lights) or \
-                    (lights_room(def_lights) and (index == len(end_els) - 1)):
-                print("=====(not lights_room(def_lights) and last_status_lights)=====")
-                print("not lights_room(def_lights) = " + str(not lights_room(def_lights)))
+            elif (not lights_room(def_lights, def_count_light) and last_status_lights) or \
+                    (lights_room(def_lights, def_count_light) and (index == len(end_els) - 1)):
+                print("=====(not lights_room(def_lights, def_count_light) and last_status_lights)=====")
+                print("not lights_room(def_lights, def_count_light) = " + str(not lights_room(def_lights, def_count_light)))
                 print("last_status_lights) = " + str(last_status_lights))
                 print("-"*50)
                 print("OR")
                 print("-" * 50)
-                print("===== (lights_room(def_lights) and (index == len(end_els) - 1)=====")
-                print("lights_room(def_lights) = " + str(lights_room(def_lights)))
+                print("===== (lights_room(def_lights, def_count_light) and (index == len(end_els) - 1)=====")
+                print("lights_room(def_lights, def_count_light) = " + str(lights_room(def_lights, def_count_light)))
                 print("index == len(end_els) - 1 = " + str(index == len(end_els) - 1))
                 print("-" * 50)
                 # Запоминаем время выключения
@@ -429,7 +430,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                     light_off = end_control
                     print("Время окончания освещения комнаты больше, чем время конца мониторинга: light_off = end_control = " + str(end_control))
                 # Если комната освещается и больше не будет временных сигналов (он последний)
-                elif lights_room(def_lights) and (index == len(end_els) - 1):
+                elif lights_room(def_lights, def_count_light) and (index == len(end_els) - 1):
                     # Берем время выключения равное времени конца мониторинга
                     light_off = end_control
                     print("Комната освещается и больше не будет временных сигналов (он последний) light_off = end_control = " + str(end_control))
@@ -456,6 +457,11 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     print("Максимальное количество лампочек")
     max_light = find_max_light(def_els=els)
     print("max_light = " + str(max_light))
+
+    # Необходимое количество лампочек для освещения комнаты
+    print("Необходимое количество лампочек для освещения комнаты")
+    count_light = find_count_light(req)
+    print("count_light = " + str(count_light))
 
     print("=" * 50)
 
@@ -499,7 +505,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
 
     print("="*50)
 
-    seconds = count_seconds(end_els, lights)
+    seconds = count_seconds(end_els, lights, count_light)
 
     print("seconds = " + str(seconds))
     return seconds
