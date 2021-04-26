@@ -24,7 +24,13 @@
 # depth < 10
 
 def flat_list(array):
-    return array
+    result = []
+    for index in range(len(array)):
+        if type(array[index]) == list:
+            result += flat_list(array[index])
+        else:
+            result.append(array[index])
+    return result
 
 if __name__ == '__main__':
     assert flat_list([1, 2, 3]) == [1, 2, 3], "First"
