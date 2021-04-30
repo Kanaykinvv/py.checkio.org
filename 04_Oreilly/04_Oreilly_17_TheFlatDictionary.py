@@ -47,34 +47,66 @@
 # root_dictionary != {}
 
 def flatten(dictionary):
-    # your code here
-    return {}
+    result = dict()
+
+    for key, value in dictionary.items():
+        print("-"*50)
+        print("На входе ключ: " + str(key))
+        print("На входе значение: " + str(value))
+        if type(value) == dict:
+            print("Значение это словарь")
+            tmp_dict = flatten(value)
+            for key2, value2 in tmp_dict.items():
+                key = key + "/" + key2
+                result[key] = value2
+        else:
+            print("Значение это строка -> минимальный словарь: " + str(dictionary))
+            return dictionary
+        print("-"*50)
+    print("end flatten | result = " + str(result))
+    return result
 
 
 if __name__ == '__main__':
-    test_input = {"key": {"deeper": {"more": {"enough": "value"}}}}
+    # test_input = {"key": {"deeper": {"more": {"enough": "value"}}}}
+    # print(' Input: {}'.format(test_input))
+    # print('Output: {}'.format(flatten(test_input)))
+
+    test_input = {
+        "name": {
+            "first": "One",
+            "last": "Drone"
+        },
+        "job": "scout",
+        "recent": {},
+        "additional": {
+            "place": {
+                "zone": "1",
+                "cell": "2"}
+        }
+    }
     print(' Input: {}'.format(test_input))
     print('Output: {}'.format(flatten(test_input)))
 
-    #These "asserts" using only for self-checking and not necessary for auto-testing
-    assert flatten({"key": "value"}) == {"key": "value"}, "Simple"
-    assert flatten(
-        {"key": {"deeper": {"more": {"enough": "value"}}}}
-    ) == {"key/deeper/more/enough": "value"}, "Nested"
-    assert flatten({"empty": {}}) == {"empty": ""}, "Empty value"
-    assert flatten({"name": {
-                        "first": "One",
-                        "last": "Drone"},
-                    "job": "scout",
-                    "recent": {},
-                    "additional": {
-                        "place": {
-                            "zone": "1",
-                            "cell": "2"}}}
-    ) == {"name/first": "One",
-          "name/last": "Drone",
-          "job": "scout",
-          "recent": "",
-          "additional/place/zone": "1",
-          "additional/place/cell": "2"}
-    print('You all set. Click "Check" now!')
+    # #These "asserts" using only for self-checking and not necessary for auto-testing
+    # assert flatten({"key": "value"}) == {"key": "value"}, "Simple"
+    # assert flatten(
+    #     {"key": {"deeper": {"more": {"enough": "value"}}}}
+    # ) == {"key/deeper/more/enough": "value"}, "Nested"
+    # assert flatten({"empty": {}}) == {"empty": ""}, "Empty value"
+    # assert flatten({"name": {
+    #                     "first": "One",
+    #                     "last": "Drone"},
+    #                 "job": "scout",
+    #                 "recent": {},
+    #                 "additional": {
+    #                     "place": {
+    #                         "zone": "1",
+    #                         "cell": "2"}}}
+    # ) == {"name/first": "One",
+    #       "name/last": "Drone",
+    #       "job": "scout",
+    #       "recent": "",
+    #       "additional/place/zone": "1",
+    #       "additional/place/cell": "2"}
+    # print('You all set. Click "Check" now!')
