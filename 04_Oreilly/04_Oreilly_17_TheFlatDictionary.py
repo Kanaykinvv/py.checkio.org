@@ -73,17 +73,7 @@ if __name__ == '__main__':
     # print('Output: {}'.format(flatten(test_input)))
 
     test_input = {
-        "name": {
-            "first": "One",
-            "last": "Drone"
-        },
-        "job": "scout",
-        "recent": {},
-        "additional": {
-            "place": {
-                "zone": "1",
-                "cell": "2"}
-        }
+        "key11":{"key12":"value1"}, "key21":{"key22":"value2"}
     }
     print(' Input: {}'.format(test_input))
     print('Output: {}'.format(flatten(test_input)))
