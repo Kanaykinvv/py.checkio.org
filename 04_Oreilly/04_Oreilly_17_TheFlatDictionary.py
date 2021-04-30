@@ -60,8 +60,8 @@ def flatten(dictionary):
                 key = key + "/" + key2
                 result[key] = value2
         else:
-            print("Значение это строка -> минимальный словарь: " + str(dictionary))
-            return dictionary
+            print("Значение это строка -> минимальный словарь: " + str(key) + ":" + str(value))
+            result[key] = value
         print("-"*50)
     print("end flatten | result = " + str(result))
     return result
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     # print('Output: {}'.format(flatten(test_input)))
 
     test_input = {
-        "key11":{"key12":"value1"}, "key21":{"key22":"value2"}
+        "key1": "value1", "key21": {"key22": "value2"}, "key31": {"key32": {"key33": "value3"}}
     }
     print(' Input: {}'.format(test_input))
     print('Output: {}'.format(flatten(test_input)))
