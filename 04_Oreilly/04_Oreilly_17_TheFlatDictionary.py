@@ -49,21 +49,24 @@
 def flatten(dictionary):
     result = dict()
 
-    for key, value in dictionary.items():
-        print("-"*50)
-        print("На входе ключ: " + str(key))
-        print("На входе значение: " + str(value))
-        if type(value) == dict:
-            print("Значение это словарь")
-            tmp_dict = flatten(value)
-            for key2, value2 in tmp_dict.items():
-                key = key + "/" + key2
-                result[key] = value2
-        else:
-            print("Значение это строка -> минимальный словарь: " + str(key) + ":" + str(value))
-            result[key] = value
-        print("-"*50)
-    print("end flatten | result = " + str(result))
+    if len(dictionary) == 0:
+        result[None] = ""
+    else:
+        for key, value in dictionary.items():
+            print("-"*50)
+            print("На входе ключ: " + str(key))
+            print("На входе значение: " + str(value))
+            if type(value) == dict:
+                print("Значение это словарь")
+                tmp_dict = flatten(value)
+                for key2, value2 in tmp_dict.items():
+                    key = key + "/" + key2
+                    result[key] = value2
+            else:
+                print("Значение это строка -> минимальный словарь: " + str(key) + ":" + str(value))
+                result[key] = value
+            print("-"*50)
+        print("end flatten | result = " + str(result))
     return result
 
 
@@ -73,7 +76,8 @@ if __name__ == '__main__':
     # print('Output: {}'.format(flatten(test_input)))
 
     test_input = {
-        "key1": "value1", "key21": {"key22": "value2"}, "key31": {"key32": {"key33": "value3"}}
+        # "key1": "value1", "key21": {"key22": "value2"}, "key31": {"key32": {"key33": "value3"}}
+        "key1": {}
     }
     print(' Input: {}'.format(test_input))
     print('Output: {}'.format(flatten(test_input)))
