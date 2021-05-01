@@ -47,6 +47,11 @@
 # root_dictionary != {}
 
 def flatten(dictionary):
+    """
+    Функция преобразования вложенного словаря в линейный
+    :param dictionary: Исходный словарь
+    :return: Линейный преобразованный словарь
+    """
     show_help = False
     result = dict()
 
