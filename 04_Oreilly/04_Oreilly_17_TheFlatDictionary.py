@@ -60,10 +60,12 @@ def flatten(dictionary):
             if type(value) == dict:
                 if show_help: print("Значение это словарь")
                 tmp_dict = flatten(value)
+                if show_help: print("tmp_dict =  " + str(tmp_dict))
                 for key2, value2 in tmp_dict.items():
                     if key2 != None:
-                        key = key + "/" + key2
-                    result[key] = value2
+                        result[key + "/" + key2] = value2
+                    else:
+                        result[key] = value2
             else:
                 if show_help: print("Значение это строка -> минимальный словарь: " + str(key) + ":" + str(value))
                 result[key] = value
@@ -74,18 +76,11 @@ def flatten(dictionary):
 
 
 if __name__ == '__main__':
-    # test_input = {"key": {"deeper": {"more": {"enough": "value"}}}}
-    # print(' Input: {}'.format(test_input))
-    # print('Output: {}'.format(flatten(test_input)))
+    test_input = {"key": {"deeper": {"more": {"enough": "value"}}}}
+    print(' Input: {}'.format(test_input))
+    print('Output: {}'.format(flatten(test_input)))
 
-    # test_input = {
-    #     "key1": "value1", "key21": {"key22": "value2"}, "key31": {"key32": {"key33": "value3"}}
-    #     "key1": {}
-    # }
-    # print(' Input: {}'.format(test_input))
-    # print('Output: {}'.format(flatten(test_input)))
-
-    # #These "asserts" using only for self-checking and not necessary for auto-testing
+    #These "asserts" using only for self-checking and not necessary for auto-testing
     assert flatten({"key": "value"}) == {"key": "value"}, "Simple"
     assert flatten(
         {"key": {"deeper": {"more": {"enough": "value"}}}}
@@ -106,4 +101,5 @@ if __name__ == '__main__':
           "recent": "",
           "additional/place/zone": "1",
           "additional/place/cell": "2"}
+
     print('You all set. Click "Check" now!')
