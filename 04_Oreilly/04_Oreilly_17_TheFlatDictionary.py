@@ -47,28 +47,29 @@
 # root_dictionary != {}
 
 def flatten(dictionary):
-    show_help = True
+    show_help = False
     result = dict()
 
     if len(dictionary) == 0:
         result[None] = ""
     else:
         for key, value in dictionary.items():
-            print("-"*50)
-            print("На входе ключ: " + str(key))
-            print("На входе значение: " + str(value))
+            if show_help: print("-"*50)
+            if show_help: print("На входе ключ: " + str(key))
+            if show_help: print("На входе значение: " + str(value))
             if type(value) == dict:
-                print("Значение это словарь")
+                if show_help: print("Значение это словарь")
                 tmp_dict = flatten(value)
                 for key2, value2 in tmp_dict.items():
                     if key2 != None:
                         key = key + "/" + key2
                     result[key] = value2
             else:
-                print("Значение это строка -> минимальный словарь: " + str(key) + ":" + str(value))
+                if show_help: print("Значение это строка -> минимальный словарь: " + str(key) + ":" + str(value))
                 result[key] = value
-            print("-"*50)
-        print("end flatten | result = " + str(result))
+            if show_help: print("-"*50)
+        if show_help: print("end flatten | result = " + str(result))
+    print("result = " + str(result))
     return result
 
 
