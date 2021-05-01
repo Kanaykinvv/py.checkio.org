@@ -33,11 +33,21 @@
 from typing import List
 
 def checkio(game_result: List[str]) -> str:
+    win_x = False
+    win_o = False
+
     dashboard = [
         [game_result[0][0], game_result[0][1], game_result[0][2]],
         [game_result[1][0], game_result[1][1], game_result[1][2]],
         [game_result[2][0], game_result[2][1], game_result[2][2]],
         ]
+
+    # for i in range(3):
+    #     x = 0
+    #     y = 0
+    #     for ii in range(3):
+    #         if
+
     print(dashboard)
 
 
