@@ -47,6 +47,7 @@
 # root_dictionary != {}
 
 def flatten(dictionary):
+    show_help = True
     result = dict()
 
     if len(dictionary) == 0:
