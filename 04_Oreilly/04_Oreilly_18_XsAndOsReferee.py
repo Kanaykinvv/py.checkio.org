@@ -33,8 +33,14 @@
 from typing import List
 
 def checkio(game_result: List[str]) -> str:
-    win_x = False
-    win_o = False
+    """
+    Функция определения победителя в игре "Крестики-Нолики"
+    :param game_result: Входной список ходов (X - ход X; O - ход O; . - пусто)
+    :return: Вывод результата (X - победитель X; O - победитель O; D - ничья)
+    """
+    show_hints = False
+
+    if show_hints: print("=====START=====")
 
     dashboard = [
         [game_result[0][0], game_result[0][1], game_result[0][2]],
@@ -42,13 +48,92 @@ def checkio(game_result: List[str]) -> str:
         [game_result[2][0], game_result[2][1], game_result[2][2]],
         ]
 
-    # for i in range(3):
-    #     x = 0
-    #     y = 0
-    #     for ii in range(3):
-    #         if
+    if show_hints:
+        for index in range(3):
+            print(dashboard[index])
 
-    print(dashboard)
+    x = 0
+    o = 0
+
+    if show_hints: print("---Find row-col---")
+    for row in range(3):
+        for col in range(3):
+            if dashboard[row][col] == "X":
+                x += 1
+            elif dashboard[row][col] == "O":
+                o += 1
+            elif dashboard[row][col] == ".":
+                break
+        if x == 3:
+            if show_hints: print("Winner X")
+            return "X"
+        if o == 3:
+            if show_hints: print("Winner O")
+            return "O"
+        if show_hints: print("row = [" + str(row) + "] x = " + str(x))
+        if show_hints: print("row = [" + str(row) + "] o = " + str(o))
+        x = 0
+        o = 0
+
+    if show_hints: print("---Find col-row---")
+    for col in range(3):
+        for row in range(3):
+            if dashboard[row][col] == "X":
+                x += 1
+            elif dashboard[row][col] == "O":
+                o += 1
+            elif dashboard[row][col] == ".":
+                break
+        if x == 3:
+            if show_hints: print("Winner X")
+            return "X"
+        if o == 3:
+            if show_hints: print("Winner O")
+            return "O"
+        if show_hints: print("col = [" + str(col) + "] x = " + str(x))
+        if show_hints: print("col = [" + str(col) + "] o = " + str(o))
+        x = 0
+        o = 0
+
+    if show_hints: print("---Find right-left---")
+    for i in range(3):
+        if dashboard[i][2-i] == "X":
+            x += 1
+        elif dashboard[i][2-i] == "O":
+            o += 1
+        elif dashboard[i][2-i] == ".":
+            break
+        if x == 3:
+            if show_hints: print("Winner X")
+            return "X"
+        if o == 3:
+            if show_hints: print("Winner O")
+            return "O"
+    if show_hints: print("x = " + str(x))
+    if show_hints: print("o = " + str(o))
+
+    x = 0
+    o = 0
+
+    if show_hints: print("---Find left-right---")
+    for i in range(3):
+        if dashboard[i][i] == "X":
+            x += 1
+        elif dashboard[i][i] == "O":
+            o += 1
+        elif dashboard[i][i] == ".":
+            break
+        if x == 3:
+            if show_hints: print("Winner X")
+            return "X"
+        if o == 3:
+            if show_hints: print("Winner O")
+            return "O"
+    if show_hints: print("x = " + str(x))
+    if show_hints: print("o = " + str(o))
+
+    if show_hints: print("Draw")
+    return "D"
 
 
 if __name__ == '__main__':
@@ -57,21 +142,21 @@ if __name__ == '__main__':
                    "XX.",
                    "XOO"]))
 
-    #These "asserts" using only for self-checking and not necessary for auto-testing
-    # assert checkio([
-    #     "X.O",
-    #     "XX.",
-    #     "XOO"]) == "X", "Xs wins"
-    # assert checkio([
-    #     "OO.",
-    #     "XOX",
-    #     "XOX"]) == "O", "Os wins"
-    # assert checkio([
-    #     "OOX",
-    #     "XXO",
-    #     "OXX"]) == "D", "Draw"
-    # assert checkio([
-    #     "O.X",
-    #     "XX.",
-    #     "XOO"]) == "X", "Xs wins again"
-    # print("Coding complete? Click 'Check' to review your tests and earn cool rewards!")
+    # These "asserts" using only for self-checking and not necessary for auto-testing
+    assert checkio([
+        "X.O",
+        "XX.",
+        "XOO"]) == "X", "Xs wins"
+    assert checkio([
+        "OO.",
+        "XOX",
+        "XOX"]) == "O", "Os wins"
+    assert checkio([
+        "OOX",
+        "XXO",
+        "OXX"]) == "D", "Draw"
+    assert checkio([
+        "O.X",
+        "XX.",
+        "XOO"]) == "X", "Xs wins again"
+    print("Coding complete? Click 'Check' to review your tests and earn cool rewards!")
