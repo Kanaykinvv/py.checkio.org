@@ -15,9 +15,22 @@ from typing import Iterable
 
 
 def chunking_by(items: list, size: int) -> Iterable:
-    # your code here
-    return items
+    """
+    Функция разбиения входного списка на списки заданной длины
+    :param items: Входной список
+    :param size: Ограничение длины
+    :return: Результирующий список списков ограниченной длины
+    """
+    result = list()
+    tmp_list = list()
 
+    for index in range(len(items)):
+        tmp_list.append(items[index])
+        if (len(tmp_list) % size == 0) or (index == len(items) - 1):
+            result.append(tmp_list.copy())
+            tmp_list.clear()
+
+    return result
 
 if __name__ == '__main__':
     print("Example:")
