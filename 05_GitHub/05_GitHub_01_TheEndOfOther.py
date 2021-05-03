@@ -28,15 +28,22 @@ def checkio(words_set):
     :param words_set: Исходный набор
     :return: Результат поиска (True - в наборе есть совпадения, False - набор мал или нет совпадений)
     """
+    # Проверяем длину списка (работаем с длиной 2 и более)
     if len(words_set) > 1:
+        # Делаем список, т.к. набр произвольный вывод
         tmp_list = list(words_set)
+        # Сортируем список по возрастанию количества букв в элементах
         tmp_list.sort(key = lambda x: len(set(list(x))))
-        print(tmp_list)
-        for index in range(len(tmp_list) - 1):
-            for i in range(len(tmp_list)):
+        # Берем каждый элемент списка
+        for index in range(len(tmp_list)):
+            # Сравниваем его со всеми элементами, начиная с текущего
+            for i in range(index, len(tmp_list)):
+                # Если данный элемент входит в другой и они не равны (идентичны)
                 if (tmp_list[index] in tmp_list[i]) and (tmp_list[index] != tmp_list[i]):
+                    # Проверяем является ли один окончанием другого
                     if tmp_list[i][-1 * len(tmp_list[index]):] == tmp_list[index]:
                         return True
+    # Если проверки не прошли возвращаем False
     return False
 
 #These "asserts" using only for self-checking and not necessary for auto-testing
