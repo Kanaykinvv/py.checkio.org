@@ -33,8 +33,16 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
     # "Алгоритм Дейкстры"
     # https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%94%D0%B5%D0%B9%D0%BA%D1%81%D1%82%D1%80%D1%8B
 
+    # Прямой (False) или обратный (True) поиск пути
+    revers = True if a > b else False
+    print("revers = " + str(revers))
+
     # Начальная вершина имеет вес равный 0
-    weights = {a: 0}
+    # weights = {a: 0} if not revers else {b: 0}
+    if revers:
+        weights = {a: 0}
+    else:
+        weights = {b: 0}
 
     # Остальные вершины максимальный вес
     for cost in costs:
@@ -42,6 +50,8 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
             weights[cost[0]] = int(2**32)
         if cost[1] not in weights.keys():
             weights[cost[1]] = int(2**32)
+
+    print(weights)
 
     # Множество посещенных вершин (на старте пустое)
     visitedPeaks = set()
@@ -65,55 +75,64 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
 
         # Проходим все входные списки
         for cost in costs:
-            # Находим стартовую текущую точку
-            if cost[0] == element:
-                # Находим наименьший вес до второй точки
-                if cost[2] + weights[element] <= weights[cost[1]]:
-                    weights[cost[1]] = cost[2] + weights[element]
+            if not revers:
+                # Находим стартовую текущую точку
+                if cost[0] == element:
+                    # Находим наименьший вес до второй точки
+                    if cost[2] + weights[element] <= weights[cost[1]]:
+                        weights[cost[1]] = cost[2] + weights[element]
+            else:
+                # Находим стартовую текущую точку
+                if cost[1] == element:
+                    # Находим наименьший вес до второй точки
+                    if cost[2] + weights[element] <= weights[cost[0]]:
+                        weights[cost[0]] = cost[2] + weights[element]
 
         # Отмечаем вершину как пройденную
         visitedPeaks.add(element)
 
-    return weights[b]
+    print(weights[b]) if not revers else print(weights[a])
+
+    return weights[b] if not revers else weights[a]
 
 
 
 
 if __name__ == '__main__':
-    print("Example:")
-    print(cheapest_flight([['A', 'C', 100],
-  ['A', 'B', 20],
-  ['B', 'C', 50]],
- 'A',
- 'C'))
+    # print("Example:")
+ #    print(cheapest_flight([['A', 'C', 100],
+ #  ['A', 'B', 20],
+ #  ['B', 'C', 50]],
+ # 'A',
+ # 'C'))
 
     # These "asserts" are used for self-checking and not for an auto-testing
-    assert cheapest_flight([['A', 'C', 100],
-  ['A', 'B', 20],
-  ['B', 'C', 50]],
- 'A',
- 'C') == 70
+ #    assert cheapest_flight([['A', 'C', 100],
+ #  ['A', 'B', 20],
+ #  ['B', 'C', 50]],
+ # 'A',
+ # 'C') == 70
     assert cheapest_flight([['A', 'C', 100],
   ['A', 'B', 20],
   ['B', 'C', 50]],
  'C',
  'A') == 70
-    assert cheapest_flight([['A', 'C', 40],
-  ['A', 'B', 20],
-  ['A', 'D', 20],
-  ['B', 'C', 50],
-  ['D', 'C', 70]],
- 'D',
- 'C') == 60
-    assert cheapest_flight([['A', 'C', 100],
-  ['A', 'B', 20],
-  ['D', 'F', 900]],
- 'A',
- 'F') == 0
-    assert cheapest_flight([['A', 'B', 10],
-  ['A', 'C', 15],
-  ['B', 'D', 15],
-  ['C', 'D', 10]],
- 'A',
- 'D') == 25
-    print("Coding complete? Click 'Check' to earn cool rewards!")
+ #    assert cheapest_flight([['A', 'C', 40],
+ #  ['A', 'B', 20],
+ #  ['A', 'D', 20],
+ #  ['B', 'C', 50],
+ #  ['D', 'C', 70]],
+ # 'D',
+ # 'C') == 60
+ #    assert cheapest_flight([['A', 'C', 100],
+ #  ['A', 'B', 20],
+ #  ['D', 'F', 900]],
+ # 'A',
+ # 'F') == 0
+ #    assert cheapest_flight([['A', 'B', 10],
+ #  ['A', 'C', 15],
+ #  ['B', 'D', 15],
+ #  ['C', 'D', 10]],
+ # 'A',
+ # 'D') == 25
+ #    print("Coding complete? Click 'Check' to earn cool rewards!")
