@@ -40,9 +40,9 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
     # Начальная вершина имеет вес равный 0
     # weights = {a: 0} if not revers else {b: 0}
     if revers:
-        weights = {a: 0}
-    else:
         weights = {b: 0}
+    else:
+        weights = {a: 0}
 
     # Остальные вершины максимальный вес
     for cost in costs:
@@ -95,7 +95,7 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
 
     return weights[b] if not revers else weights[a]
 
-
+# Не правильный счет при реверсе поиска
 
 
 if __name__ == '__main__':
