@@ -32,17 +32,20 @@ from typing import List
 def cheapest_flight(costs: List, a: str, b: str) -> int:
     # "Алгоритм Дейкстры"
     # https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%94%D0%B5%D0%B9%D0%BA%D1%81%D1%82%D1%80%D1%8B
+    show_hints = True
 
     # Прямой (False) или обратный (True) поиск пути
     revers = True if a > b else False
-    print("revers = " + str(revers))
+    if show_hints: print("revers = " + str(revers))
 
     # Начальная вершина имеет вес равный 0
-    # weights = {a: 0} if not revers else {b: 0}
-    if revers:
-        weights = {b: 0}
-    else:
-        weights = {a: 0}
+    weights = {a: 0}
+    # if revers:
+    #     weights = {b: 0}
+    # else:
+    #     weights = {a: 0}
+
+    if show_hints: print("weights = " + str(weights))
 
     # Остальные вершины максимальный вес
     for cost in costs:
@@ -51,7 +54,7 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
         if cost[1] not in weights.keys():
             weights[cost[1]] = int(2**32)
 
-    print(weights)
+    if show_hints: print(weights)
 
     # Множество посещенных вершин (на старте пустое)
     visitedPeaks = set()
@@ -64,32 +67,48 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
         """
         current_element = ""
         current_weight = 2**32
+
         for key in weights.keys():
+            if show_hints: print("key = " + str(key))
             if (key not in visitedPeaks) and (weights[key] <= current_weight):
+                if show_hints: print("Вершина не посещена и ее вес меньше:")
                 current_element = key
                 current_weight = weights[key]
+                if show_hints: print("current_element = " + str(current_element))
+                if show_hints: print("current_weight = " + str(current_weight))
+        if show_hints: print("current_element найден: " + str(current_element))
         return current_element
 
     while len(visitedPeaks) != len(weights.keys()):
         element = search_min_unvisited_peaks()
-
+        if show_hints: print("element = " + str(element))
         # Проходим все входные списки
         for cost in costs:
             if not revers:
+                if show_hints: print("not revers")
                 # Находим стартовую текущую точку
                 if cost[0] == element:
+                    if show_hints: print("cost[0] == element = " + str(element))
                     # Находим наименьший вес до второй точки
                     if cost[2] + weights[element] <= weights[cost[1]]:
+                        if show_hints: print("cost[2] + weights[element] = " + str(cost[2]) + " + " + str(weights[element]) + " <= weights[cost[1] = " + str(weights[cost[1]]))
                         weights[cost[1]] = cost[2] + weights[element]
+                        if show_hints: print("weights[cost[1]] = " + str(weights[cost[1]]))
             else:
+                if show_hints: print("revers")
                 # Находим стартовую текущую точку
                 if cost[1] == element:
+                    if show_hints: print("cost[1] == element = " + str(element))
                     # Находим наименьший вес до второй точки
                     if cost[2] + weights[element] <= weights[cost[0]]:
+                        if show_hints: print("cost[2] + weights[element] = " + str(cost[2]) + " + " + str(weights[element]) + " <= weights[cost[0] = " + str(weights[cost[0]]))
                         weights[cost[0]] = cost[2] + weights[element]
+                        if show_hints: print("weights[cost[0]] = " + str(weights[cost[0]]))
 
         # Отмечаем вершину как пройденную
+        if show_hints: print("visitedPeaks.add(" + str(element) + ")")
         visitedPeaks.add(element)
+        if show_hints: print("visitedPeaks = " + str(visitedPeaks))
 
     print(weights[b]) if not revers else print(weights[a])
 
