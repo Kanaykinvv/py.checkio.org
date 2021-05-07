@@ -67,7 +67,7 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
         """
         current_element = ""
         current_weight = 2**32
-
+        if show_hints: print("-"*50)
         for key in weights.keys():
             if show_hints: print("key = " + str(key))
             if (key not in visitedPeaks) and (weights[key] <= current_weight):
@@ -77,13 +77,16 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
                 if show_hints: print("current_element = " + str(current_element))
                 if show_hints: print("current_weight = " + str(current_weight))
         if show_hints: print("current_element найден: " + str(current_element))
+        if show_hints: print("-" * 50)
         return current_element
 
     while len(visitedPeaks) != len(weights.keys()):
+        if show_hints: print("-" * 50)
         element = search_min_unvisited_peaks()
         if show_hints: print("element = " + str(element))
         # Проходим все входные списки
         for cost in costs:
+            if show_hints: print("cost = " + str(cost))
             if not revers:
                 if show_hints: print("not revers")
                 # Находим стартовую текущую точку
@@ -91,7 +94,7 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
                     if show_hints: print("cost[0] == element = " + str(element))
                     # Находим наименьший вес до второй точки
                     if cost[2] + weights[element] <= weights[cost[1]]:
-                        if show_hints: print("cost[2] + weights[element] = " + str(cost[2]) + " + " + str(weights[element]) + " <= weights[cost[1] = " + str(weights[cost[1]]))
+                        if show_hints: print("cost[2] + weights[element] = " + str(cost[2]) + " + " + str(weights[element]) + " <= weights[cost[1] = " + str(weights[cost[1]]) + "]")
                         weights[cost[1]] = cost[2] + weights[element]
                         if show_hints: print("weights[cost[1]] = " + str(weights[cost[1]]))
             else:
@@ -104,6 +107,7 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
                         if show_hints: print("cost[2] + weights[element] = " + str(cost[2]) + " + " + str(weights[element]) + " <= weights[cost[0] = " + str(weights[cost[0]]))
                         weights[cost[0]] = cost[2] + weights[element]
                         if show_hints: print("weights[cost[0]] = " + str(weights[cost[0]]))
+            if show_hints: print("-" * 25)
 
         # Отмечаем вершину как пройденную
         if show_hints: print("visitedPeaks.add(" + str(element) + ")")
