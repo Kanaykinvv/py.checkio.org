@@ -114,9 +114,11 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
         visitedPeaks.add(element)
         if show_hints: print("visitedPeaks = " + str(visitedPeaks))
 
-    print(weights[b]) if not revers else print(weights[a])
 
-    return weights[b] if not revers else weights[a]
+    # print(weights[b]) if not revers else print(weights[a])
+    #
+    # return weights[b] if not revers else weights[a]
+    return weights[b]
 
 # Не правильный счет при реверсе поиска
 
@@ -135,18 +137,18 @@ if __name__ == '__main__':
  #  ['B', 'C', 50]],
  # 'A',
  # 'C') == 70
-    assert cheapest_flight([['A', 'C', 100],
-  ['A', 'B', 20],
-  ['B', 'C', 50]],
- 'C',
- 'A') == 70
- #    assert cheapest_flight([['A', 'C', 40],
+ #    assert cheapest_flight([['A', 'C', 100],
  #  ['A', 'B', 20],
- #  ['A', 'D', 20],
- #  ['B', 'C', 50],
- #  ['D', 'C', 70]],
- # 'D',
- # 'C') == 60
+ #  ['B', 'C', 50]],
+ # 'C',
+ # 'A') == 70
+    assert cheapest_flight([['A', 'C', 40],
+  ['A', 'B', 20],
+  ['A', 'D', 20],
+  ['B', 'C', 50],
+  ['D', 'C', 70]],
+ 'D',
+ 'C') == 60
  #    assert cheapest_flight([['A', 'C', 100],
  #  ['A', 'B', 20],
  #  ['D', 'F', 900]],
