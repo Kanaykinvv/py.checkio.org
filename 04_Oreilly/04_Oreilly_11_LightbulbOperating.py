@@ -83,7 +83,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
     # Словарь состоянием лампочек
     lights = dict()
     # Внутренний параметр вывода подсказок (лога)
-    show_hint = False
+    show_hint = True
 
     # -/-/-/-/-/-/-/-/-/-/-/-/-/
     #       Внутренние методы
