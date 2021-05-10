@@ -32,18 +32,10 @@ from typing import List
 def cheapest_flight(costs: List, a: str, b: str) -> int:
     # "Алгоритм Дейкстры"
     # https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%94%D0%B5%D0%B9%D0%BA%D1%81%D1%82%D1%80%D1%8B
-    show_hints = True
-
-    # Прямой (False) или обратный (True) поиск пути
-    revers = True if a > b else False
-    if show_hints: print("revers = " + str(revers))
+    show_hints = False
 
     # Начальная вершина имеет вес равный 0
     weights = {a: 0}
-    # if revers:
-    #     weights = {b: 0}
-    # else:
-    #     weights = {a: 0}
 
     if show_hints: print("weights = " + str(weights))
 
@@ -87,26 +79,25 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
         # Проходим все входные списки
         for cost in costs:
             if show_hints: print("cost = " + str(cost))
-            if not revers:
-                if show_hints: print("not revers")
-                # Находим стартовую текущую точку
-                if cost[0] == element:
-                    if show_hints: print("cost[0] == element = " + str(element))
-                    # Находим наименьший вес до второй точки
-                    if cost[2] + weights[element] <= weights[cost[1]]:
-                        if show_hints: print("cost[2] + weights[element] = " + str(cost[2]) + " + " + str(weights[element]) + " <= weights[cost[1] = " + str(weights[cost[1]]) + "]")
-                        weights[cost[1]] = cost[2] + weights[element]
-                        if show_hints: print("weights[cost[1]] = " + str(weights[cost[1]]))
+            # Находим стартовую текущую точку
+            if cost[0] == element:
+                if show_hints: print("cost[0] == element = " + str(element))
+                # Находим наименьший вес до второй точки
+                if cost[2] + weights[element] <= weights[cost[1]]:
+                    if show_hints: print("cost[2] + weights[element] = " + str(cost[2]) + " + " + str(
+                        weights[element]) + " <= weights[cost[1] = " + str(weights[cost[1]]) + "]")
+                    weights[cost[1]] = cost[2] + weights[element]
+                    if show_hints: print("weights[cost[1]] = " + str(weights[cost[1]]))
+            elif cost[1] == element:
+                if show_hints: print("cost[1] == element = " + str(element))
+                # Находим наименьший вес до второй точки
+                if cost[2] + weights[element] <= weights[cost[0]]:
+                    if show_hints: print("cost[2] + weights[element] = " + str(cost[2]) + " + " + str(
+                        weights[element]) + " <= weights[cost[0] = " + str(weights[cost[0]]) + "]")
+                    weights[cost[0]] = cost[2] + weights[element]
+                    if show_hints: print("weights[cost[1]] = " + str(weights[cost[0]]))
             else:
-                if show_hints: print("revers")
-                # Находим стартовую текущую точку
-                if cost[1] == element:
-                    if show_hints: print("cost[1] == element = " + str(element))
-                    # Находим наименьший вес до второй точки
-                    if cost[2] + weights[element] <= weights[cost[0]]:
-                        if show_hints: print("cost[2] + weights[element] = " + str(cost[2]) + " + " + str(weights[element]) + " <= weights[cost[0] = " + str(weights[cost[0]]))
-                        weights[cost[0]] = cost[2] + weights[element]
-                        if show_hints: print("weights[cost[0]] = " + str(weights[cost[0]]))
+                if show_hints: print("element = " + str(element) + " отсутствует в текущем списке " + str(cost))
             if show_hints: print("-" * 25)
 
         # Отмечаем вершину как пройденную
@@ -114,11 +105,7 @@ def cheapest_flight(costs: List, a: str, b: str) -> int:
         visitedPeaks.add(element)
         if show_hints: print("visitedPeaks = " + str(visitedPeaks))
 
-
-    # print(weights[b]) if not revers else print(weights[a])
-    #
-    # return weights[b] if not revers else weights[a]
-    return weights[b]
+    return weights[b] if weights[b] < int(2**32) else 0
 
 # Не правильный счет при реверсе поиска
 
@@ -132,16 +119,16 @@ if __name__ == '__main__':
  # 'C'))
 
     # These "asserts" are used for self-checking and not for an auto-testing
- #    assert cheapest_flight([['A', 'C', 100],
- #  ['A', 'B', 20],
- #  ['B', 'C', 50]],
- # 'A',
- # 'C') == 70
- #    assert cheapest_flight([['A', 'C', 100],
- #  ['A', 'B', 20],
- #  ['B', 'C', 50]],
- # 'C',
- # 'A') == 70
+    assert cheapest_flight([['A', 'C', 100],
+  ['A', 'B', 20],
+  ['B', 'C', 50]],
+ 'A',
+ 'C') == 70
+    assert cheapest_flight([['A', 'C', 100],
+  ['A', 'B', 20],
+  ['B', 'C', 50]],
+ 'C',
+ 'A') == 70
     assert cheapest_flight([['A', 'C', 40],
   ['A', 'B', 20],
   ['A', 'D', 20],
@@ -149,15 +136,15 @@ if __name__ == '__main__':
   ['D', 'C', 70]],
  'D',
  'C') == 60
- #    assert cheapest_flight([['A', 'C', 100],
- #  ['A', 'B', 20],
- #  ['D', 'F', 900]],
- # 'A',
- # 'F') == 0
- #    assert cheapest_flight([['A', 'B', 10],
- #  ['A', 'C', 15],
- #  ['B', 'D', 15],
- #  ['C', 'D', 10]],
- # 'A',
- # 'D') == 25
- #    print("Coding complete? Click 'Check' to earn cool rewards!")
+    assert cheapest_flight([['A', 'C', 100],
+  ['A', 'B', 20],
+  ['D', 'F', 900]],
+ 'A',
+ 'F') == 0
+    assert cheapest_flight([['A', 'B', 10],
+  ['A', 'C', 15],
+  ['B', 'D', 15],
+  ['C', 'D', 10]],
+ 'A',
+ 'D') == 25
+    print("Coding complete? Click 'Check' to earn cool rewards!")
