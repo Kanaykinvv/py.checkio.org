@@ -384,9 +384,45 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]],
                 if show_hint: print("Комната не освещалась и начала освещаться")
                 if show_hint: print("light_on = lamp_time = " + str(lamp_time))
                 if show_hint: print("last_status_lights = True")
+
+                # --------------------------
+                # Если комната освещается и это последний временной элемент
+                if index == len(end_els) - 1:
+                    if show_hint: print("Комната освещается и это последний временной элемент")
+                    if show_hint: print("-" * 50)
+
+                    # Если время начала освещения комнаты раньше, чем время начала мониторинга
+                    if light_on <= start_control:
+                        # Время начала освещения принимаем за время начала мониторинга
+                        light_on = start_control
+                        if show_hint: print(
+                            "Время начала освещения комнаты раньше, чем время начала мониторинга: light_on = start_control = " + str(
+                                start_control))
+                    # Если время начала освещения комнаты больше, чем время окончания мониторинга
+                    elif light_on >= end_control:
+                        # Время начала освещения принимаем за время конца мониторинга
+                        light_on = end_control
+                        if show_hint: print(
+                            "Время начала освещения комнаты больше, чем время окончания мониторинга: light_on = end_control = " + str(
+                                end_control))
+
+                    # Берем время выключения равное времени конца мониторинга
+                    light_off = end_control
+
+                    # Производим подсчет seconds
+                    if show_hint: print("Производим подсчет seconds")
+                    if show_hint: print("light_off = " + str(light_off))
+                    if show_hint: print("light_on = " + str(light_on))
+                    if show_hint: print(
+                        "(light_off - light_on).total_seconds() = " + str((light_off - light_on).total_seconds()))
+                    if show_hint: print("result = " + str(result))
+                    if (light_off - light_on).total_seconds() > 0:
+                        result += (light_off - light_on).total_seconds()
+                    if show_hint: print("ИТОГО: " + str(result))
+                # --------------------------
             # Если комната освещалась и перестала освещаться | или комната освещается и это последний временной элемент
-            elif (not lights_room(def_lights) and last_status_lights) or \
-                    (lights_room(def_lights) and (index == len(end_els) - 1)):
+            elif ((not lights_room(def_lights) and last_status_lights)) or \
+                    ((lights_room(def_lights) and (index == len(end_els) - 1))):
                 if show_hint: print("=====(not lights_room(def_lights) and last_status_lights)=====")
                 if show_hint: print("not lights_room(def_lights) = " + str(not lights_room(def_lights)))
                 if show_hint: print("last_status_lights) = " + str(last_status_lights))
@@ -778,13 +814,21 @@ if __name__ == '__main__':
     #     (datetime(2015, 1, 12, 10, 0, 30), 2),
     # ], start_watching=datetime(2015, 1, 12, 10, 0, 10), end_watching=datetime(2015, 1, 12, 10, 0, 30),
     #     operating=timedelta(seconds=5)) == 10
+    #
+    # assert sum_light(els=[
+    #     datetime(2015, 1, 12, 10, 0, 0),
+    #     datetime(2015, 1, 12, 10, 10, 10),
+    #     datetime(2015, 1, 12, 11, 0, 0),
+    #     datetime(2015, 1, 12, 11, 10, 10)
+    # ],
+    #     start_watching=datetime(2015, 1, 12, 11, 0, 0)) == 610
+    #
 
     assert sum_light(els=[
         datetime(2015, 1, 12, 10, 0, 0),
         datetime(2015, 1, 12, 10, 10, 10),
-        datetime(2015, 1, 12, 11, 0, 0),
-        datetime(2015, 1, 12, 11, 10, 10)
+        datetime(2015, 1, 12, 11, 0, 0)
     ],
-        start_watching=datetime(2015, 1, 12, 11, 0, 0)) == 610
-
-    print("The forth mission in series is completed? Click 'Check' to earn cool rewards!")
+        start_watching=datetime(2015, 1, 12, 11, 5, 0),
+        end_watching=datetime(2015, 1, 12, 11, 10, 0)) == 300
+    # print("The forth mission in series is completed? Click 'Check' to earn cool rewards!")
