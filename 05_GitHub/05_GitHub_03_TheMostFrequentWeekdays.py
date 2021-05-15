@@ -15,6 +15,7 @@
 # 2
 # Предварительные условия: Год является числом от 1 до 9999. Неделя начинается с понедельника.
 from datetime import date
+
 def most_frequent_days(year):
     result=[x[1] for x in sorted(set([(date(year,1,1).weekday(),date(year,1,1).strftime("%A")),\
     (date(year,12,31).weekday(),date(year,12,31).strftime("%A"))]))]
