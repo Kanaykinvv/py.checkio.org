@@ -24,7 +24,7 @@ def most_frequent_days(year):
 
 if __name__ == '__main__':
     print("Example:")
-    print(most_frequent_days(1084))
+    print(most_frequent_days(1167))
 
     # These "asserts" are used for self-checking and not for an auto-testing
     assert most_frequent_days(1084) == ['Tuesday', 'Wednesday']
