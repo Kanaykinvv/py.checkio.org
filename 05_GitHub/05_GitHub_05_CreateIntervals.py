@@ -20,13 +20,18 @@
 # create_intervals({1, 2, 3, 6, 7, 8, 4, 5}) == [(1, 8)]
 
 def create_intervals(data):
-    result = []
-    show_hits = False
+    """
+    Функция создания списка кортежей по входным отметкам.
+    :param data: Входной перечень отметок
+    :return: Список кортежей
+    """
+    result = []         # Результат
+    show_hits = False   # Подсказки
 
+    # Из-за ошибки проверки на сайте, пришлось внедрить такой костыль (на проверку поступал список списков)
     if type(data) == list:
         data_list = sorted(data)
         if show_hits: print("list")
-
     else:
         if show_hits: print("not list")
         data_list = sorted(list(data))
@@ -57,6 +62,7 @@ def create_intervals(data):
                 if show_hits: print("Текущий элемент data_list[" + str(i) + "] = " + str(data_list[i]) + " (+1) равен следующему элементу data_list[" + str(i+1) + "] = " + str(data_list[i+1]))
 
     if show_hits: print(result)
+
     return result
 
 if __name__ == '__main__':
