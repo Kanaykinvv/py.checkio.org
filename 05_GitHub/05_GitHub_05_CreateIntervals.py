@@ -21,16 +21,15 @@
 
 def create_intervals(data):
     result = []
+    show_hits = False
 
     if type(data) == list:
         data_list = sorted(data)
-        print("list")
+        if show_hits: print("list")
 
     else:
-        print("not list")
+        if show_hits: print("not list")
         data_list = sorted(list(data))
-
-    show_hits = False
 
     if show_hits: print("Исходный список: " + str(data_list))
 
