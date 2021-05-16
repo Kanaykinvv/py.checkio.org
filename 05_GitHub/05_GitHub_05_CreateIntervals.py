@@ -20,14 +20,50 @@
 # create_intervals({1, 2, 3, 6, 7, 8, 4, 5}) == [(1, 8)]
 
 def create_intervals(data):
-    """
-        Create a list of intervals out of set of ints.
-    """
-    # your code here
-    return None
+    result = []
+
+    if type(data) == list:
+        data_list = sorted(data)
+        print("list")
+
+    else:
+        print("not list")
+        data_list = sorted(list(data))
+
+    show_hits = False
+
+    if show_hits: print("Исходный список: " + str(data_list))
+
+    if len(data_list) > 0:
+
+        start = data_list[0]
+        if show_hits: print("Исходный start = " + str(start))
+
+        for i in range(len(data_list)):
+            if show_hits: print("-"*50)
+            if show_hits: print("i = " + str(i) + " | " + str(len(data_list)))
+
+            if i == len(data_list) - 1:
+                if show_hits: print("Это последний элемент data_list[" + str(i) + "] = " + str(data_list[i]))
+                result.append((start, data_list[i]))
+                if show_hits: print("Добавляем (" + str(start) + ", " + str(data_list[i]) + ")")
+
+            elif (data_list[i] + 1) != data_list[i+1]:
+                if show_hits: print("Текущий элемент data_list[" + str(i) + "] = " + str(data_list[i]) + " (+1) не равен следующему элементу data_list[" + str(i+1) + "] = " + str(data_list[i+1]))
+                result.append((start, data_list[i]))
+                if show_hits: print("Добавляем (" + str(start) + ", " + str(data_list[i]) + ")")
+                start = data_list[i+1]
+                if show_hits: print("Новое значение start = " + str(start))
+            else:
+                if show_hits: print("Текущий элемент data_list[" + str(i) + "] = " + str(data_list[i]) + " (+1) равен следующему элементу data_list[" + str(i+1) + "] = " + str(data_list[i+1]))
+
+    if show_hits: print(result)
+    return result
 
 if __name__ == '__main__':
     #These "asserts" using only for self-checking and not necessary for auto-testing
     assert create_intervals({1, 2, 3, 4, 5, 7, 8, 12}) == [(1, 5), (7, 8), (12, 12)], "First"
     assert create_intervals({1, 2, 3, 6, 7, 8, 4, 5}) == [(1, 8)], "Second"
+    assert create_intervals({8, 10, 12}) == [(8, 8), (10, 10), (12, 12)], "Therd"
+    # assert create_intervals([8, 7]) == [[7, 8]],  "Error in Site"
     print('Almost done! The only thing left to do is to Check it!')
