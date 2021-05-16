@@ -23,8 +23,24 @@
 from typing import Iterable
 
 def expand_intervals(items: Iterable) -> Iterable:
-    # your code here
-    return []
+    """
+    Функция определения всех знацений по предоставленным отрезкам.
+    :param items: Список отрезвов
+    :return: Все входящие значения по отрезкам с сортировкой
+    """
+    result_set = set()
+
+    # Если список не пустой
+    if len(items) > 0:
+        # Перебираем его и генерируем новый от минимального до максимального значения,
+        # с добавлением/обновлением этих значений в исходное множество
+        for item in items:
+            result_set.update(list(range(min(item), max(item) + 1)))
+        # По окончании формируем отсортированный список исходя из полученного множества
+        return sorted(list(result_set))
+    else:
+        # Если исходный список пустой - возвращаем пустой список
+        return []
 
 
 if __name__ == '__main__':
