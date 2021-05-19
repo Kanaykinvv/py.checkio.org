@@ -33,39 +33,53 @@
 # all(0 < x < 2 * 10 ** 18 and 0 < y < 2 * 10 ** 18 for x, y in operations)
 # 0 < required < 2 * 10 ** 18
 
+
 def checkio(required, operations):
 
-    mass = []
+    current_operation = 0
     length = 0
+    show_hint = False
 
     for oper in operations:
         if max(oper) > length:
             length = max(oper)
 
-    for i in range(length):
-        mass[i] = 0
+    if required > length:
+        if show_hint: print("required > length = -1")
+        return -1
 
-    def max_color(m: list) -> int:
+    mass = [0] * length
+
+    def metr_color(m: list) -> int:
         result = 0
-        count = 0
-        for i in range(len(m) - 1):
+        for i in range(len(m)):
             if m[i] == 1:
-                count+=1
-                if count > result:  result = count
-            else:
-                count = 0
+                result += 1
         return result
 
-    print(mass)
-    # for operation in operations:
-    #
+    if show_hint: print(mass)
+
+    for operation in operations:
+        for x in range(operation[0] - 1, operation[1]):
+            mass[x] = 1
+        if show_hint: print(mass)
+        if show_hint: print("max_color(mass) = " + str(metr_color(mass)))
+        current_operation += 1
+        if metr_color(mass) >= required:
+            if show_hint: print("metr_color(mass) >= required")
+            return current_operation
+    if show_hint: print("Final = -1")
+    return -1
 
 
 if __name__ == '__main__':
     #These "asserts" using only for self-checking and not necessary for auto-testing
-    assert checkio(5, [[1, 5], [11, 15], [2, 14], [21, 25]]) == 1, "1st"
+    # assert checkio(5, [[1, 5], [11, 15], [2, 14], [21, 25]]) == 1, "1st"
     # assert checkio(6, [[1, 5], [11, 15], [2, 14], [21, 25]]) == 2, "2nd"
     # assert checkio(11, [[1, 5], [11, 15], [2, 14], [21, 25]]) == 3, "3rd"
     # assert checkio(16, [[1, 5], [11, 15], [2, 14], [21, 25]]) == 4, "4th"
     # assert checkio(21, [[1, 5], [11, 15], [2, 14], [21, 25]]) == -1, "not enough"
     # assert checkio(1000000011, [[1, 1000000000], [11, 1000000010]]) == -1, "large"
+    assert checkio(30, [[1, 2], [20, 30], [25, 28], [5, 10], [4, 21], [1, 6]]) == 6, "test in site"
+
+    # assert checkio(10 000 000 000 000, [[183 456 789 012 345, 193456789078479], [163456789034827, 173456789028737], [103456789038198, 113456789073490], [123456789073249, 203456789073621]])
