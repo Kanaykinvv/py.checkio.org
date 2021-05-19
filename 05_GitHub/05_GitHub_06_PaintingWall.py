@@ -34,7 +34,14 @@
 # 0 < required < 2 * 10 ** 18
 
 def checkio(required, operations):
-    return -1
+
+    mass =[]
+
+    def max_color(m: list) -> int:
+        result = 0
+
+        for i in range(len(m) - 1):
+            if m[i] == 1
 
 
 if __name__ == '__main__':
