@@ -15,8 +15,18 @@
 # Примеры:
 # isinstance(checkio(), (int, float, complex))
 # Как это используется: Эта задача - это ваше сочинение в коде и программирование, как литература.
+import random
+
 
 def checkio():
+    x = random.randint(1000, 9999)
+    list_int = list(char for char in str(x))
+    maxi = "".join([str(item) for item in sorted(list_int, reverse=True)])
+    mini = "".join([str(item) for item in sorted(list_int, reverse=False)])
+
+    print(maxi)
+    print(mini)
+
     return 73  # if you are Sheldon
 
 if __name__ == '__main__':
