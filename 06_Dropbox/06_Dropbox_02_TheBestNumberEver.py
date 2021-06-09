@@ -29,7 +29,7 @@ def checkio():
     """
     result = random.randint(1001, 9988)
     iteration = 0
-    show_hint = True
+    show_hint = False
 
     def minus_maxi_mini(x: int) -> int:
         list_int = list(char for char in str(x))
